@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import './screens/home_screen.dart';
+import './widgets/qr_scanner_widget.dart';
+import './screens/login_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,18 +12,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/',
+      theme: ThemeData.dark(),
+      initialRoute: '/home',
       routes: {
-        '/': (context) => HomeScreen(),
-        '/about': (context) => Scaffold(
-          appBar: AppBar(title: Text('About')),
-          body: Center(child: Text('This is the About page')),
+        '/home': (context) => HomeScreen(),
+        '/qr-scanner': (context) => QRScannerWidget(
+          onQRCodeScanned: (code) {
+            // Przechwytywanie zeskanowanego kodu QR
+          },
         ),
-        '/login': (context) => Scaffold(
-          appBar: AppBar(title: Text('Login')),
-          body: Center(child: Text('This is the Login page')),
-        ),
+        '/login': (context) => LoginScreen(),
       },
     );
   }
