@@ -18,7 +18,7 @@ class FullWidthButton extends StatelessWidget {
       height: 50,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF4CAF50), Color(0xFF2196F3)],
+          colors: [Color(0xFF4C68AF), Color(0xFF0B4F85)],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
