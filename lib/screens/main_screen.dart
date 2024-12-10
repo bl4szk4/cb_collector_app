@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/full_width_button.dart';
 
-class HomeScreen extends StatelessWidget {
+class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,15 +10,21 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FullWidthButton(
-              text: 'Login',
+              text: 'My items',
               onPressed: () {
-                Navigator.pushNamed(context, '/qr-scanner');
+                Navigator.pushNamed(context, '');
               },
             ),
             FullWidthButton(
-              text: 'About',
+              text: 'Scan Item',
               onPressed: () {
-                Navigator.pushNamed(context, '/main_screen');
+                Navigator.pushNamed(context, '');
+              },
+            ),
+            FullWidthButton(
+              text: 'Log out',
+              onPressed: () {
+                Navigator.pushNamed(context, '');
               },
             ),
           ],
