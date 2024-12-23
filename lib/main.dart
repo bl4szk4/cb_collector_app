@@ -45,13 +45,15 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/home': (context) => HomeScreen(),
         '/qr-scanner': (context) => QRScannerWidget(
-          onQRCodeScanned: (code) {},
+          onQRCodeScanned: (code) {
+            Navigator.pushNamed(context, '/login', arguments: code);
+          },
         ),
         '/login': (context) => LoginScreen(),
         '/main_screen': (context) => MainScreen(),
         '/language': (context) => LanguageScreen(onLocaleChange: _changeLanguage),
-
       },
+
     );
   }
 }
