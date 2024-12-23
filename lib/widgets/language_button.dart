@@ -14,14 +14,15 @@ class LanguageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           elevation: 5,
-          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          minimumSize: const Size.fromHeight(100),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(40),
           ),
           backgroundColor: Colors.purple.shade600,
         ),
@@ -33,8 +34,8 @@ class LanguageButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
                 flagAsset,
-                height: 32,
-                width: 32,
+                height: 64,
+                width: 64,
                 fit: BoxFit.cover,
               ),
             ),
@@ -42,7 +43,7 @@ class LanguageButton extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),

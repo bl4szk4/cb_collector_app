@@ -15,7 +15,7 @@ class FullWidthButton extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       width: double.infinity,
-      height: 50,
+      height: 100,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF4C68AF), Color(0xFF0B4F85)],
@@ -34,7 +34,7 @@ class FullWidthButton extends StatelessWidget {
               text,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
             ),
