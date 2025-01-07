@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Ustaw tu najnowszą stabilną wersję AGP (np. 8.2.0)
+        classpath 'com.android.tools.build:gradle:8.2.0'
+    }
+}
+
+// Dalsza część pliku
 allprojects {
     repositories {
         google()
@@ -5,14 +17,14 @@ allprojects {
     }
 }
 
+// Jeśli chcesz, żeby buildy wszystkich subprojektów trafiały do ../build:
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Definicja tasku "clean", który usuwa katalog build
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

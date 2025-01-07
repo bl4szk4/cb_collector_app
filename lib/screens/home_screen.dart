@@ -29,6 +29,12 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/language');
               },
             ),
+            FullWidthButton(
+              text: AppLocalizations.of(context)!.translate('change_language'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/print_screen');
+              },
+            ),
           ],
         ),
       ),
