@@ -30,9 +30,9 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             FullWidthButton(
-              text: AppLocalizations.of(context)!.translate('printer'),
+              text: AppLocalizations.of(context)!.translate('settings'),
               onPressed: () {
-                Navigator.pushNamed(context, '/print_screen');
+                Navigator.pushNamed(context, '/settings');
               },
             ),
           ],

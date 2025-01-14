@@ -7,5 +7,10 @@
   "my_items": "My items",
   "scan_item": "Scan item",
   "log_out": "Log out",
-  "printer": "Printer"
+  "printer": "Printer",
+  "settings": "Settings",
+  "print_labels": "Print labels",
+  "print_codes": "Print codes",
+  "brother_printer": "Brother external printer",
+  "internal_printer": "Internal printer"
 }

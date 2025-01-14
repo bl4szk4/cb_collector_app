@@ -7,5 +7,10 @@
   "my_items": "Moje przedmioty",
   "scan_item": "Zeskanuj Przedmiot",
   "log_out": "Wyloguj",
-  "printer": "Drukarka"
+  "printer": "Drukarka",
+  "settings": "Ustawienia",
+  "print_labels": "Drukowanie etykiet",
+  "print_codes": "Drukowanie kodów",
+  "brother_printer": "Zewnętrzna drukarka Brother",
+  "internal_printer": "Wewnętrzna drukarka"
 }
