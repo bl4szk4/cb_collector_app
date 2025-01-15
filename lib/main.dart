@@ -6,8 +6,9 @@ import './widgets/qr_scanner_widget.dart';
 import './screens/login_screen.dart';
 import './screens/main_screen.dart';
 import './screens/language_screen.dart';
-import './screens/print_screen.dart';
+// import './screens/print_screen.dart';
 import './screens/settings_screen.dart';
+import './screens/imin_printer.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,6 +56,8 @@ class _MyAppState extends State<MyApp> {
         '/main_screen': (context) => MainScreen(),
         '/language': (context) => LanguageScreen(onLocaleChange: _changeLanguage),
         '/settings': (context) => SettingsScreen(),
+        '/print': (context) => PrintScreen(),
+
       },
 
     );
