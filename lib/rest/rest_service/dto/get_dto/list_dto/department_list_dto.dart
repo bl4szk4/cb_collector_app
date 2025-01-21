@@ -11,7 +11,7 @@ class DepartmentListDto{
   factory DepartmentListDto.fromJson(dynamic json){
     var departments = json["departments"];
 
-    List<DepartmentDTO> departmentsList = departments.map((faculty) => DepartmentDTO.fromJson(faculty)).toList();
+    List<DepartmentDTO> departmentsList = departments.map((department) => DepartmentDTO.fromJson(department)).toList();
 
     return DepartmentListDto(departmentsList: departmentsList);
   }

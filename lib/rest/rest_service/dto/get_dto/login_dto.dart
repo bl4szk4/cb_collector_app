@@ -13,8 +13,4 @@ class LoginDTO implements DTO<LoginDTO>{
     };
   }
 
-  @override
-  factory LoginDTO.fromJson(Map<String, dynamic> json){
-    return LoginDTO(qrCode: json['qr_code']);
-  }
 }
