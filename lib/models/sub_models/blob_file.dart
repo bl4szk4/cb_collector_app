@@ -1,3 +1,5 @@
+import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_dto.dart';
+
 class BlobFile {
   final String fileName;
   final String fileUrl;
@@ -11,6 +13,15 @@ class BlobFile {
     return BlobFile(
       fileName: json['fileName'] as String,
       fileUrl: json['fileUrl'] as String,
+    );
+  }
+
+
+  @override
+  factory BlobFile.fromDTO(BlobDto dto){
+    return BlobFile(
+        fileName: dto.filename,
+        fileUrl: dto.fileUrl
     );
   }
 

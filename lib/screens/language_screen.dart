@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../widgets/language_button.dart';
+import '../services/main_service.dart';
 
 class LanguageScreen extends StatelessWidget {
-  final Function(Locale) onLocaleChange;
+  final Service service;
 
-  LanguageScreen({required this.onLocaleChange});
+  LanguageScreen({required this.service});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class LanguageScreen extends StatelessWidget {
               text: 'Polski',
               flagAsset: 'assets/flags/pl.webp',
               onPressed: () {
-                onLocaleChange(Locale('pl'));
+                service.changeLocale(Locale('pl'));
                 Navigator.pop(context);
               },
             ),
@@ -25,7 +26,7 @@ class LanguageScreen extends StatelessWidget {
               text: 'English',
               flagAsset: 'assets/flags/en.webp',
               onPressed: () {
-                onLocaleChange(Locale('en'));
+                service.changeLocale(Locale('en'));
                 Navigator.pop(context);
               },
             ),

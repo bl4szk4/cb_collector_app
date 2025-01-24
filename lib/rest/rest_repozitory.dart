@@ -13,8 +13,10 @@ import 'package:pbl_collector/rest/rest_service/dto/post_dto/add_location_dto.da
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/add_room_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/assign_to_user_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/change_item_location_dto.dart';
+import 'package:pbl_collector/rest/rest_service/dto/post_dto/item_label_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/list_users_params.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dart';
+import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_list_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/token_dto.dart';
 import '../utils/config.dart';
 import 'package:logger/logger.dart';
@@ -90,5 +92,9 @@ class RestRepository {
 
   Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, ReturnItemDto data) async {
     return await restService.markEmptyItem(user, data);
+  }
+
+  Future<BlobListDto> printLabels(LoggedUser user, ItemLabelDto data) async {
+    return await restService.printLabel(user, data);
   }
 }

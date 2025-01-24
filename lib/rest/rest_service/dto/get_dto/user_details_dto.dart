@@ -1,8 +1,8 @@
 class UserDetailsDTO{
   int id;
   int departmentId;
-  int name;
-  int surname;
+  String name;
+  String surname;
 
   UserDetailsDTO({
     required this.id,

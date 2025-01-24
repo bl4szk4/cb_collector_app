@@ -9,6 +9,7 @@ import 'package:pbl_collector/rest/rest_service/dto/post_dto/change_item_locatio
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/list_users_params.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dart';
 import 'package:pbl_collector/models/logged_user.dart';
+import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_list_dto.dart';
 import 'dto/get_dto/list_dto/department_list_dto.dart';
 import 'dto/get_dto/login_dto.dart';
 import 'dto/get_dto/list_dto/faculty_list_dto.dart';
@@ -153,6 +154,22 @@ class RestService {
       user,
       'item/get-items/',
       parser: (json) => ItemsListDTO.fromJson(json),
+    );
+  }
+
+  Future<BlobListDto> printLabel(
+      LoggedUser user,
+      dynamic data,
+      ) async {
+    return _makeRequest(
+      'item/label/',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.token?.access}',
+      },
+      body: data.toJson(),
+      parser: (json) => BlobListDto.fromJson(json),
     );
   }
 

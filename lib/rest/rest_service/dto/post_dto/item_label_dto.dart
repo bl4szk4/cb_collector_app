@@ -1,5 +1,5 @@
 import '../../../interfaces/dto.dart';
-import 'package:pbl_collector/models/sub_models/label_type.dart';
+import 'package:pbl_collector/enums/label_type.dart';
 
 
 class ItemLabelDto implements DTO<ItemLabelDto>{
