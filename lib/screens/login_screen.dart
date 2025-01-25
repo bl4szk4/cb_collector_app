@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import '../enums/service_errors.dart';
-import '../widgets/full_width_button.dart';
+import '../widgets/buttons/full_width_button.dart';
 import '../services/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {

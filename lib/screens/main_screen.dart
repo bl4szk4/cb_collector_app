@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/full_width_button.dart';
+import '../widgets/buttons/full_width_button.dart';
 import '../services/app_localizations.dart';
 
 class MainScreen extends StatelessWidget {
@@ -19,7 +19,7 @@ class MainScreen extends StatelessWidget {
             FullWidthButton(
               text:  AppLocalizations.of(context)!.translate('scan_item'),
               onPressed: () {
-                Navigator.pushNamed(context, '/scan-item');
+                Navigator.pushNamed(context, '/qr-scanner/details');
               },
             ),
             FullWidthButton(

@@ -157,6 +157,15 @@ class RestService {
     );
   }
 
+  Future<ItemDetailsDTO> getItemDetails(LoggedUser user, String itemQR) async {
+    return _getWithAuth(
+      user,
+      '/item/get-item/',
+      params: {"item_qr_code": itemQR},
+      parser: (json) => ItemDetailsDTO.fromJson(json),
+    );
+  }
+
   Future<BlobListDto> printLabel(
       LoggedUser user,
       dynamic data,

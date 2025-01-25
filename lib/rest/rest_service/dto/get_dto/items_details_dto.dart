@@ -3,6 +3,7 @@ import '../../../../models/sub_models/blob_file.dart';
 
 class ItemDetailsDTO{
   int id;
+  String name;
   int userId;
   ItemStatus status;
   int currentUser;
@@ -13,6 +14,7 @@ class ItemDetailsDTO{
 
   ItemDetailsDTO({
     required this.id,
+    required this.name,
     required this.userId,
     required this.currentUser,
     required this.status,
@@ -26,6 +28,7 @@ class ItemDetailsDTO{
   factory ItemDetailsDTO.fromJson(dynamic json){
     return ItemDetailsDTO(
         id: json["id"] as int,
+        name: json["name"] as String,
         userId: json["userId"] as int,
         currentUser: json["currentUser"] as int,
         casNumber: json["casNumber"] as String,

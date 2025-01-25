@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/full_width_button.dart';
+import '../widgets/buttons/full_width_button.dart';
 import '../services/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {

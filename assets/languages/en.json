@@ -12,5 +12,17 @@
   "print_labels": "Print labels",
   "print_codes": "Print codes",
   "brother_printer": "Brother external printer",
-  "internal_printer": "Internal printer"
+  "internal_printer": "Internal printer",
+  "chemical_items_list": "My items",
+  "error_loading_items": "Error loading items",
+  "item_details": "Item details",
+  "error_loading_item_details": "Error loading item details",
+  "error_loading_label": "Error loading label",
+  "no_labels_available": "No labels available",
+  "error_loading_image": "Error loading image",
+  "item_actions": "Item actions",
+  "dispose": "Dispose",
+  "mark_low": "Mark low",
+  "mark_empty": "Mark empty",
+  "mark_missing": "Mark missing"
 }

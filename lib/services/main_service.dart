@@ -31,6 +31,8 @@ import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dar
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_list_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/response_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/token_dto.dart';
+import '../models/sub_models/blob_file.dart';
+import '../models/sub_models/item_status.dart';
 import 'settings_service.dart';
 
 
@@ -105,16 +107,110 @@ class Service{
 
   }
 
-  Future<ServiceResponse<ItemsList>> getItems() async{
-    try{
-      ItemsListDTO responseDTO = await restRepository.getItems(controller.user);
-      return ServiceResponse(data: ItemsList.fromDTO(responseDTO), error: ServiceErrors.ok);
-    } catch (e){
-      logger.e(e.toString());
-      return ServiceResponse(data: null, error: ServiceErrors.apiError);
+  // Future<ServiceResponse<ItemDetails>> getItemDetails(String itemQR) async{
+  //     try{
+  //       ItemDetailsDTO responseDTO = await restRepository.getItemDetails(controller.user, itemQR);
+  //       return ServiceResponse(data: ItemDetails.fromDTO(responseDTO), error: ServiceErrors.ok);
+  //     } catch (e){
+  //       logger.e(e.toString());
+  //       return ServiceResponse(data: null, error: ServiceErrors.apiError);
+  //
+  //     }
+  // }
+  Future<ServiceResponse<ItemDetails>> getItemDetails(String itemQR) async {
+    try {
+      // Przykładowa generacja danych DTO
+      final mockItemsListDTO =
+          ItemDetailsDTO(
+            id: 1,
+            name: "Acetic Acid",
+            casNumber: "64-19-7",
+            pCode: "P12345",
+            userId: 101,
+            currentUser: 101,
+            status: ItemStatus.Opened,
+            expirationDay: DateTime.now().add(const Duration(days: 365)),
+            locationId: 10,
+          );
 
+      return ServiceResponse(
+        data: ItemDetails.fromDTO(mockItemsListDTO),
+        error: ServiceErrors.ok,
+      );
+    } catch (e) {
+      // Obsługa błędu
+      return ServiceResponse(
+        data: null,
+        error: ServiceErrors.apiError,
+      );
     }
+  }
 
+  // Future<ServiceResponse<ItemsList>> getItems() async{
+  //   try{
+  //     ItemsListDTO responseDTO = await restRepository.getItems(controller.user);
+  //     return ServiceResponse(data: ItemsList.fromDTO(responseDTO), error: ServiceErrors.ok);
+  //   } catch (e){
+  //     logger.e(e.toString());
+  //     return ServiceResponse(data: null, error: ServiceErrors.apiError);
+  //
+  //   }
+  //
+  // }
+
+  Future<ServiceResponse<ItemsList>> getItems() async {
+    try {
+      // Przykładowa generacja danych DTO
+      final mockItemsListDTO = ItemsListDTO(
+        itemsList: [
+          ItemDetailsDTO(
+            id: 1,
+            name: "Acetic Acid",
+            casNumber: "64-19-7",
+            pCode: "P12345",
+            userId: 101,
+            currentUser: 101,
+            status: ItemStatus.Opened,
+            expirationDay: DateTime.now().add(const Duration(days: 365)),
+            locationId: 10,
+          ),
+          ItemDetailsDTO(
+            id: 2,
+            name: "Ethanol",
+            casNumber: "64-17-5",
+            pCode: "P54321",
+            userId: 102,
+            currentUser: 101,
+            status: ItemStatus.Ordered,
+            expirationDay: DateTime.now().add(const Duration(days: 180)),
+            locationId: 20,
+          ),
+          ItemDetailsDTO(
+            id: 3,
+            name: "Sodium Hydroxide",
+            casNumber: "1310-73-2",
+            pCode: "P67890",
+            userId: 103,
+            currentUser: 103,
+            status: ItemStatus.Delivered,
+            expirationDay: DateTime.now().subtract(const Duration(days: 30)),
+            locationId: 30,
+          ),
+        ],
+      );
+
+      // Przekształcenie DTO na model ItemsList
+      return ServiceResponse(
+        data: ItemsList.fromDTO(mockItemsListDTO),
+        error: ServiceErrors.ok,
+      );
+    } catch (e) {
+      // Obsługa błędu
+      return ServiceResponse(
+        data: null,
+        error: ServiceErrors.apiError,
+      );
+    }
   }
 
   Future<ServiceResponse<FacultyList>> getFaculties() async{
@@ -216,25 +312,44 @@ class Service{
     }
   }
 
+  // Future<ServiceResponse<BlobsList>> getLabel(int id, LabelType labelType) async {
+  //   try {
+  //     ItemLabelDto params = ItemLabelDto(id: id, labelType: labelType);
+  //     BlobListDto responseDTO = await restRepository.printLabels(
+  //         controller.user, params
+  //     );
+  //     return ServiceResponse(
+  //         data: BlobsList.fromDTO(responseDTO),
+  //         error: ServiceErrors.ok
+  //     );
+  //   } catch (e) {
+  //     logger.e(e.toString());
+  //     return ServiceResponse(data: null, error: ServiceErrors.apiError);
+  //   }
+  // }
+
   Future<ServiceResponse<BlobsList>> getLabel(int id, LabelType labelType) async {
     try {
-      ItemLabelDto params = ItemLabelDto(id: id, labelType: labelType);
-      BlobListDto responseDTO = await restRepository.printLabels(
-          controller.user, params
+      // Mock data for labels
+      final mockBlobsList = BlobsList(
+        blobsList: [
+          BlobFile(
+            fileName: 'label_$id.png',
+            fileUrl: 'https://via.placeholder.com/150?text=Label+$id',
+          ),
+        ],
       );
-      return ServiceResponse(
-          data: BlobsList.fromDTO(responseDTO),
-          error: ServiceErrors.ok
-      );
+
+      return ServiceResponse(data: mockBlobsList, error: ServiceErrors.ok);
     } catch (e) {
       logger.e(e.toString());
       return ServiceResponse(data: null, error: ServiceErrors.apiError);
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> assignItem(int itemId, int userId) async {
+  Future<ServiceResponse<ItemDetails>> assignItem(int itemId) async {
     try {
-      AssignToUserDto params = AssignToUserDto(itemId: itemId, userId: userId);
+      AssignToUserDto params = AssignToUserDto(itemId: itemId);
       ItemDetailsDTO responseDTO = await restRepository.assignItem(
     controller.user, params
     );

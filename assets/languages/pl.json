@@ -12,5 +12,17 @@
   "print_labels": "Drukowanie etykiet",
   "print_codes": "Drukowanie kodów",
   "brother_printer": "Zewnętrzna drukarka Brother",
-  "internal_printer": "Wewnętrzna drukarka"
+  "internal_printer": "Wewnętrzna drukarka",
+  "chemical_items_list": "Moje przemioty",
+  "error_loading_items": "Błąd ładowania przedmiotów",
+  "item_details": "Szczegóły",
+  "error_loading_item_details": "Błąd wczytywania detali przedmiotów",
+  "error_loading_label": "Błąd wczytywania labela",
+  "no_labels_available": "Brak dostępnych labeli",
+  "error_loading_image": "Błąd ładowania obrazu",
+  "item_actions": "Item actions",
+  "dispose": "Dispose",
+  "mark_low": "Mark low",
+  "mark_empty": "Mark empty",
+  "mark_missing": "Mark missing"
 }
