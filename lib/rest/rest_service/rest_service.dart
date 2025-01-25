@@ -74,7 +74,7 @@ class RestService {
 
   Future<TokenDTO> login(LoginDTO data) async {
     return _makeRequest(
-      'user/login/',
+      '/user/login/',
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: data.toJson(),
@@ -85,7 +85,7 @@ class RestService {
   Future<UsersListDTO> getListOfUsers(LoggedUser user, ListUsersParamsDto data) async {
     return _getWithAuth(
       user,
-      'user/users/',
+      '/user/users/',
       params: data.toJson(),
       parser: (json) => UsersListDTO.fromJson(json),
     );
@@ -94,7 +94,7 @@ class RestService {
   Future<FacultyListDTO> getListOfFaculties(LoggedUser user) async {
     return _getWithAuth(
       user,
-      'location/get-faculties/',
+      '/location/get-faculties/',
       parser: (json) => FacultyListDTO.fromJson(json),
     );
   }
@@ -102,7 +102,7 @@ class RestService {
   Future<DepartmentListDto> getListOfDepartments(LoggedUser user, int facultyId) async {
     return _getWithAuth(
       user,
-      'location/get-departments/$facultyId/',
+      '/location/get-departments/$facultyId/',
       parser: (json) => DepartmentListDto.fromJson(json),
     );
   }
@@ -110,7 +110,7 @@ class RestService {
   Future<RoomsListDTO> getListOfRooms(LoggedUser user, int departmentId) async {
     return _getWithAuth(
       user,
-      'location/get-rooms/$departmentId/',
+      '/location/get-rooms/$departmentId/',
       parser: (json) => RoomsListDTO.fromJson(json),
     );
   }
@@ -118,14 +118,14 @@ class RestService {
   Future<LocationsListDTO> getListOfLocations(LoggedUser user, int roomId) async {
     return _getWithAuth(
       user,
-      'location/get-rooms/$roomId/',
+      '/location/get-rooms/$roomId/',
       parser: (json) => LocationsListDTO.fromJson(json),
     );
   }
 
   Future<RoomDTO> addRoom(LoggedUser user, AddRoomDTO data) async {
     return _makeRequest(
-      'location/add-room/',
+      '/location/add-room/',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ class RestService {
 
   Future<LocationDTO> addLocation(LoggedUser user, AddLocationDto data) async {
     return _makeRequest(
-      'location/add-location/',
+      '/location/add-location/',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ class RestService {
   Future<ItemsListDTO> getItems(LoggedUser user) async {
     return _getWithAuth(
       user,
-      'item/get-items/',
+      '/item/get-items/',
       parser: (json) => ItemsListDTO.fromJson(json),
     );
   }
@@ -162,7 +162,7 @@ class RestService {
       dynamic data,
       ) async {
     return _makeRequest(
-      'item/label/',
+      '/item/label/',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ class RestService {
       dynamic data,
       ) async {
     return _makeRequest(
-      'item/$action/',
+      '/item/$action/',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

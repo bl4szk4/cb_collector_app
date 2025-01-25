@@ -47,3 +47,4 @@ app.*.map.json
 /test/
 /web/
 /windows/
+/assets/config/config.json

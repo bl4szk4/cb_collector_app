@@ -18,27 +18,9 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             FullWidthButton(
-              text: AppLocalizations.of(context)!.translate('main_screen_title'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/main_screen');
-              },
-            ),
-            FullWidthButton(
-              text: AppLocalizations.of(context)!.translate('change_language'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/language');
-              },
-            ),
-            FullWidthButton(
               text: AppLocalizations.of(context)!.translate('settings'),
               onPressed: () {
                 Navigator.pushNamed(context, '/settings');
-              },
-            ),
-            FullWidthButton(
-              text: AppLocalizations.of(context)!.translate('printer'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/print');
               },
             ),
           ],

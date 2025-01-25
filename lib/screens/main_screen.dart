@@ -13,13 +13,25 @@ class MainScreen extends StatelessWidget {
             FullWidthButton(
               text:  AppLocalizations.of(context)!.translate('my_items'),
               onPressed: () {
-                Navigator.pushNamed(context, '');
+                Navigator.pushNamed(context, '/my-items');
               },
             ),
             FullWidthButton(
               text:  AppLocalizations.of(context)!.translate('scan_item'),
               onPressed: () {
-                Navigator.pushNamed(context, '');
+                Navigator.pushNamed(context, '/scan-item');
+              },
+            ),
+            FullWidthButton(
+              text:  'Add',
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              },
+            ),
+            FullWidthButton(
+              text: 'STH',
+              onPressed: () {
+                Navigator.pushNamed(context, '/add');
               },
             ),
             FullWidthButton(

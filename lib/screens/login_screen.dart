@@ -1,43 +1,86 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
+import 'package:pbl_collector/controllers/main_controller.dart';
+import '../enums/service_errors.dart';
+import '../widgets/full_width_button.dart';
+import '../services/app_localizations.dart';
 
-class LoginScreen extends StatelessWidget {
-  final ApiService apiService = ApiService(baseUrl: 'https://your-api-url.com');
+class LoginScreen extends StatefulWidget {
+  final MainController mainController;
+
+  const LoginScreen({super.key, required this.mainController});
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _isLoading = false;
+  String? _message;
+  bool _hasAttemptedLogin = false;
 
   Future<void> _login(String qrCode, BuildContext context) async {
-    try {
-      bool success = await apiService.loginWithQRCode(qrCode);
-      if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful!')),
-        );
-        Navigator.pushReplacementNamed(context, '/main_screen');
+    setState(() {
+      _isLoading = true;
+      _message = null;
+    });
+
+    final service = widget.mainController.service;
+    final response = await service.login(qrCode);
+
+    setState(() {
+      _isLoading = false;
+      if (response.error == ServiceErrors.ok) {
+        _message = 'Login successful!'; // TODO: translate
+        Navigator.pushReplacementNamed(context, '/main-screen');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed!')),
-        );
+        _message = 'Login failed: ${response.error.toString()}';
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final qrCode = ModalRoute.of(context)?.settings.arguments as String?;
 
-    if (qrCode != null) {
+    if (qrCode != null && !_hasAttemptedLogin) {
+      _hasAttemptedLogin = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _login(qrCode, context);
       });
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text('Logging in')),
+      appBar: AppBar(title: const Text('Logging in')),
       body: Center(
-        child: CircularProgressIndicator(),
+        child: _isLoading
+            ? const CircularProgressIndicator()
+            : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_message != null) ...[
+              Text(
+                _message!,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: _message == 'Login successful!' // TODO: translate
+                      ? Colors.green
+                      : Colors.red,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+            ],
+            if (_message != null && _message!.contains('Login failed')) ...[
+              FullWidthButton(
+                text: "Return", // TODO: translate
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home');
+                },
+              ),
+              const SizedBox(height: 20),
+            ],
+          ],
+        ),
       ),
     );
   }
