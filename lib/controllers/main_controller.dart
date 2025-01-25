@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pbl_collector/screens/add_location_screen.dart';
 import 'package:pbl_collector/screens/item_action_screen.dart';
 import 'package:pbl_collector/screens/my_items_screen.dart';
 import 'package:pbl_collector/services/main_service.dart';
@@ -7,6 +8,7 @@ import 'package:logger/logger.dart';
 
 import '../models/item_details.dart';
 import '../models/logged_user.dart';
+import '../screens/change_item_location_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/item_details_screen.dart';
 import '../widgets/qr_scanner_widget.dart';
@@ -61,11 +63,13 @@ class MainController extends StatelessWidget {
             Navigator.pushNamed(context, '/login', arguments: code);
           },
           navigateToDetails: false,
+          instruction: "Scan your ID",
         ),
         '/qr-scanner/details': (context) => QRScannerWidget(
           mainController: this,
           onQRCodeScanned: (String code) {},
           navigateToDetails: true,
+          instruction: "Scan item",
         ),
         '/settings': (context) => SettingsScreen(),
         '/my-items': (context) => MyItemsScreen(mainController: this),
@@ -77,6 +81,11 @@ class MainController extends StatelessWidget {
           final itemId = ModalRoute.of(context)!.settings.arguments as int;
           return ItemActionScreen(mainController: this, itemId: itemId);
         },
+        '/item/details/edit/location': (context) {
+          final itemId = ModalRoute.of(context)!.settings.arguments as int;
+          return ChangeLocationScreen(mainController: this, itemId: itemId);
+        },
+        '/add-location': (context) => AddLocationScreen(mainController: this)
       },
     );
   }

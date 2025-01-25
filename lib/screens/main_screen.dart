@@ -23,21 +23,15 @@ class MainScreen extends StatelessWidget {
               },
             ),
             FullWidthButton(
-              text:  'Add',
+              text:  AppLocalizations.of(context)!.translate('add'),
               onPressed: () {
-                Navigator.pushNamed(context, '/');
-              },
-            ),
-            FullWidthButton(
-              text: 'STH',
-              onPressed: () {
-                Navigator.pushNamed(context, '/add');
+                Navigator.pushNamed(context, '/add-location');
               },
             ),
             FullWidthButton(
               text:  AppLocalizations.of(context)!.translate('log_out'),
               onPressed: () {
-                Navigator.pushNamed(context, '');
+                Navigator.pushNamed(context, '/log-out');
               },
             ),
           ],

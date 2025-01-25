@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
       if (response.error == ServiceErrors.ok) {
-        _message = 'Login successful!'; // TODO: translate
+        _message = AppLocalizations.of(context)!.translate('login_success');
         Navigator.pushReplacementNamed(context, '/main-screen');
       } else {
         _message = 'Login failed: ${response.error.toString()}';
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Logging in')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.translate('logging_in'))),
       body: Center(
         child: _isLoading
             ? const CircularProgressIndicator()
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 _message!,
                 style: TextStyle(
                   fontSize: 16,
-                  color: _message == 'Login successful!' // TODO: translate
+                  color: _message == 'Login successful!'
                       ? Colors.green
                       : Colors.red,
                 ),
@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
             if (_message != null && _message!.contains('Login failed')) ...[
               FullWidthButton(
-                text: "Return", // TODO: translate
+                text: AppLocalizations.of(context)!.translate('return'),
                 onPressed: () {
                   Navigator.pushNamed(context, '/home');
                 },
