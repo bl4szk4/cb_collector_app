@@ -47,5 +47,10 @@
   "return": "Powrót",
   "logging_in": "Logowanie",
   "login_success": "Sukces logowania",
-  "add": "Dodaj"
+  "add": "Dodaj",
+  "error_loading_settings": "Błąd ładowania ustawień",
+  "language": "Język",
+  "polish": "Polski",
+  "english": "English",
+  "qr_scanner": "Skaner QR"
 }

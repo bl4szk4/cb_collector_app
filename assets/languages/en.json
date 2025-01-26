@@ -47,5 +47,10 @@
   "return": "Return",
   "logging_in": "Logging in",
   "login_success": "Login success",
-  "add": "Add"
+  "add": "Add",
+  "error_loading_settings": "Error loading settings",
+  "language": "Language",
+  "polish": "Polski",
+  "english": "English",
+  "qr_scanner": "QR Scanner"
 }

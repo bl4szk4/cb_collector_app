@@ -3,6 +3,10 @@ import '../services/settings_service.dart';
 import '../services/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
+  final Function(Locale) setLocale;
+
+  const SettingsScreen({Key? key, required this.setLocale}) : super(key: key);
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -11,6 +15,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String printCodes = 'brother';
   String printLabels = 'brother';
   Locale currentLocale = const Locale('en');
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -19,13 +24,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<void> _loadSettings() async {
-    final settings = await SettingsService.loadSettings();
-    final locale = await SettingsService.loadLocale();
-    setState(() {
-      printCodes = settings['printCodes']!;
-      printLabels = settings['printLabels']!;
-      currentLocale = locale;
-    });
+    try {
+      final settings = await SettingsService.loadSettings();
+      final locale = await SettingsService.loadLocale();
+      setState(() {
+        printCodes = settings['printCodes'] ?? 'brother';
+        printLabels = settings['printLabels'] ?? 'brother';
+        currentLocale = locale;
+        isLoading = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.translate('error_loading_settings')),
+        ),
+      );
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> _updateSetting(String key, String value) async {
@@ -41,6 +58,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _changeLanguage(Locale locale) async {
     await SettingsService.saveLocale(locale);
+    widget.setLocale(locale);
     setState(() {
       currentLocale = locale;
     });
@@ -50,9 +68,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context)!.translate('settings')),
       ),
-      body: SingleChildScrollView(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,12 +101,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -95,7 +118,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Column(
       children: [
         ListTile(
-          title: const Text('Polski'),
+          title: Text(AppLocalizations.of(context)!.translate('polish')),
           trailing: Radio<Locale>(
             value: const Locale('pl'),
             groupValue: currentLocale,
@@ -103,7 +126,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         ListTile(
-          title: const Text('English'),
+          title: Text(AppLocalizations.of(context)!.translate('english')),
           trailing: Radio<Locale>(
             value: const Locale('en'),
             groupValue: currentLocale,
@@ -121,7 +144,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Column(
       children: [
         ListTile(
-          title: const Text('Brother Printer'),
+          title: Text(AppLocalizations.of(context)!.translate('brother_printer')),
           leading: Radio<String>(
             value: 'brother',
             groupValue: groupValue,
@@ -129,7 +152,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         ListTile(
-          title: const Text('Internal Printer'),
+          title: Text(AppLocalizations.of(context)!.translate('internal_printer')),
           leading: Radio<String>(
             value: 'internal',
             groupValue: groupValue,

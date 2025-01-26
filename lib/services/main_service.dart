@@ -57,7 +57,7 @@ class Service{
     _locale = await SettingsService.loadLocale();
   }
 
-  void changeLocale(Locale locale) async{
+  Future<void> changeLocale(Locale locale) async{
     _locale = locale;
     await  SettingsService.saveLocale(locale);
   }
