@@ -44,7 +44,7 @@
   "edit": "Edit",
   "print": "Print",
   "item_label": "Item label",
-  "return": "Return",
+  "return": "Return item",
   "logging_in": "Logging in",
   "login_success": "Login success",
   "add": "Add",
@@ -52,5 +52,8 @@
   "language": "Language",
   "polish": "Polski",
   "english": "English",
-  "qr_scanner": "QR Scanner"
+  "qr_scanner": "QR Scanner",
+  "back": "Back",
+  "exit": "Exit",
+  "borrow": "Borrow item"
 }

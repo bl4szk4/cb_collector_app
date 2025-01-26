@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/items_list.dart';
 import 'package:pbl_collector/models/item_details.dart';
 import '../models/service_response.dart';
 import '../services/app_localizations.dart';
 import '../enums/service_errors.dart';
+import '../widgets/navigators/bottom_navigator.dart';
 
 class MyItemsScreen extends StatefulWidget {
   final MainController mainController;
@@ -50,6 +52,20 @@ class _ChemicalsListScreenState extends State<MyItemsScreen> {
               return _buildItemTile(item);
             },
           );
+        },
+      ),
+      bottomNavigationBar: CustomBottomNavigation(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'settings':
+              Navigator.pushNamed(context, '/settings');
+              break;
+            case 'main':
+              Navigator.pushNamed(context, '/main-screen');
+            case 'exit':
+              SystemNavigator.pop();
+              break;
+          }
         },
       ),
     );

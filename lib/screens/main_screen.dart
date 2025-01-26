@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:pbl_collector/widgets/navigators/bottom_navigator.dart';
 import '../widgets/buttons/full_width_button.dart';
 import '../services/app_localizations.dart';
 
@@ -36,6 +38,20 @@ class MainScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomBottomNavigation(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'settings':
+              Navigator.pushNamed(context, '/settings');
+              break;
+            case 'main':
+              break;
+            case 'exit':
+              SystemNavigator.pop();
+              break;
+          }
+        },
       ),
     );
   }

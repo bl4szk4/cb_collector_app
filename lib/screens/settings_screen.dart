@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/settings_service.dart';
 import '../services/app_localizations.dart';
+import '../widgets/navigators/go_back_navigator.dart';
 
 class SettingsScreen extends StatefulWidget {
   final Function(Locale) setLocale;
@@ -96,6 +97,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: GoBackNavigator(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'back':
+              Navigator.pop(context);
+              break;
+          }
+        },
       ),
     );
   }

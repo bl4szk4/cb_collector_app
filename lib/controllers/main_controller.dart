@@ -78,7 +78,7 @@ class _MainControllerState extends State<MainController> {
 
   Map<String, WidgetBuilder> _buildRoutes() {
     return {
-      '/home': (context) => HomeScreen(),
+      '/home': (context) => HomeScreen(mainController: widget),
       '/login': (context) => LoginScreen(mainController: widget),
       '/main-screen': (context) => MainScreen(),
       '/qr-scanner': (context) => QRScannerWidget(

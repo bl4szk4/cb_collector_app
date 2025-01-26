@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
+import 'package:pbl_collector/widgets/navigators/go_back_navigator.dart';
 import '../models/service_response.dart';
 import '../models/item_details.dart';
 import '../services/app_localizations.dart';
@@ -125,6 +127,17 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
               ),
             ),
         ],
+      ),
+      bottomNavigationBar: GoBackNavigator(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'main':
+              Navigator.pop(context);
+            case 'exit':
+              SystemNavigator.pop();
+              break;
+          }
+        },
       ),
     );
   }

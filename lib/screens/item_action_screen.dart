@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/item_details.dart';
+import 'package:pbl_collector/widgets/navigators/go_back_navigator.dart';
 import '../services/app_localizations.dart';
 import '../models/service_response.dart';
 import '../enums/service_errors.dart';
@@ -91,6 +93,18 @@ class ItemActionScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: GoBackNavigator(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'back':
+              Navigator.pushNamed(context, '/my-items');
+              break;
+            case 'exit':
+              SystemNavigator.pop();
+              break;
+          }
+        },
       ),
     );
   }

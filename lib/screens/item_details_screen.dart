@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/item_details.dart';
 import '../enums/label_type.dart';
@@ -8,6 +9,7 @@ import '../services/app_localizations.dart';
 import '../enums/service_errors.dart';
 import '../models/sub_models/blob_file.dart';
 import '../widgets/buttons/small_button.dart';
+import '../widgets/navigators/go_back_navigator.dart';
 
 class ItemDetailsScreen extends StatefulWidget {
   final MainController mainController;
@@ -82,6 +84,18 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: GoBackNavigator(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'back':
+              Navigator.pushNamed(context, '/main-screen');
+              break;
+            case 'exit':
+              SystemNavigator.pop();
+              break;
+          }
+        },
       ),
     );
   }

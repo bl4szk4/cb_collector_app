@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/faculty.dart';
 import 'package:pbl_collector/models/department.dart';
@@ -6,6 +7,7 @@ import 'package:pbl_collector/models/room.dart';
 import '../services/app_localizations.dart';
 import '../models/service_response.dart';
 import '../enums/service_errors.dart';
+import '../widgets/navigators/go_back_navigator.dart';
 
 class AddLocationScreen extends StatefulWidget {
   final MainController mainController;
@@ -122,9 +124,6 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.translate('add_location')),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -208,6 +207,18 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: GoBackNavigator(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'back':
+              Navigator.pushNamed(context, '/main-menu');
+              break;
+            case 'exit':
+              SystemNavigator.pop();
+              break;
+          }
+        },
       ),
     );
   }
