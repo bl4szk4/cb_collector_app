@@ -78,12 +78,11 @@ class Service{
       TokenDTO loginResponse = await restRepository.login(loginDto);
       controller.user.token = Token(access: loginResponse.access);
       controller.user.isLogged = true;
+      logger.i(controller.user.token);
       return ServiceResponse(data: null, error: ServiceErrors.ok);
     } catch (e){
       logger.e(e.toString());
-      controller.user.token = Token(access: "255afdgasfg165asd");
-      controller.user.isLogged = true;
-      return ServiceResponse(data: null, error: ServiceErrors.ok); //FIXME: replace with error
+      return ServiceResponse(data: null, error: ServiceErrors.loginError);
     }
   }
 
@@ -138,7 +137,6 @@ class Service{
         error: ServiceErrors.ok,
       );
     } catch (e) {
-      // Obsługa błędu
       return ServiceResponse(
         data: null,
         error: ServiceErrors.apiError,
@@ -146,72 +144,18 @@ class Service{
     }
   }
 
-  // Future<ServiceResponse<ItemsList>> getItems() async{
-  //   try{
-  //     ItemsListDTO responseDTO = await restRepository.getItems(controller.user);
-  //     return ServiceResponse(data: ItemsList.fromDTO(responseDTO), error: ServiceErrors.ok);
-  //   } catch (e){
-  //     logger.e(e.toString());
-  //     return ServiceResponse(data: null, error: ServiceErrors.apiError);
-  //
-  //   }
-  //
-  // }
+  Future<ServiceResponse<ItemsList>> getItems() async{
+    try{
+      ItemsListDTO responseDTO = await restRepository.getItems(controller.user);
+      return ServiceResponse(data: ItemsList.fromDTO(responseDTO), error: ServiceErrors.ok);
+    } catch (e){
+      logger.e(e.toString());
+      return ServiceResponse(data: null, error: ServiceErrors.apiError);
 
-  Future<ServiceResponse<ItemsList>> getItems() async {
-    try {
-      // Przykładowa generacja danych DTO
-      final mockItemsListDTO = ItemsListDTO(
-        itemsList: [
-          ItemDetailsDTO(
-            id: 1,
-            name: "Acetic Acid",
-            casNumber: "64-19-7",
-            pCode: "P12345",
-            userId: 101,
-            currentUser: 101,
-            status: ItemStatus.Opened,
-            expirationDay: DateTime.now().add(const Duration(days: 365)),
-            locationId: 10,
-          ),
-          ItemDetailsDTO(
-            id: 2,
-            name: "Ethanol",
-            casNumber: "64-17-5",
-            pCode: "P54321",
-            userId: 102,
-            currentUser: 101,
-            status: ItemStatus.Ordered,
-            expirationDay: DateTime.now().add(const Duration(days: 180)),
-            locationId: 20,
-          ),
-          ItemDetailsDTO(
-            id: 3,
-            name: "Sodium Hydroxide",
-            casNumber: "1310-73-2",
-            pCode: "P67890",
-            userId: 103,
-            currentUser: 103,
-            status: ItemStatus.Delivered,
-            expirationDay: DateTime.now().subtract(const Duration(days: 30)),
-            locationId: 30,
-          ),
-        ],
-      );
-
-      // Przekształcenie DTO na model ItemsList
-      return ServiceResponse(
-        data: ItemsList.fromDTO(mockItemsListDTO),
-        error: ServiceErrors.ok,
-      );
-    } catch (e) {
-      // Obsługa błędu
-      return ServiceResponse(
-        data: null,
-        error: ServiceErrors.apiError,
-      );
     }
+
   }
+
 
   Future<ServiceResponse<FacultyList>> getFaculties() async{
     try{

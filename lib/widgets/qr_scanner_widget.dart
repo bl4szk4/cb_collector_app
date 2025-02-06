@@ -27,16 +27,26 @@ class QRScannerWidget extends StatefulWidget {
 }
 
 class _QRScannerWidgetState extends State<QRScannerWidget> {
+  late MobileScannerController _scannerController;
   bool _hasScanned = false;
   bool _showInstructions = true;
 
   @override
   void initState() {
     super.initState();
+    _scannerController = MobileScannerController();
     Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         _showInstructions = false;
       });
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    setState(() {
+      _hasScanned = false; // Reset scanning state when dependencies change
     });
   }
 
@@ -89,14 +99,18 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
   }
 
   @override
+  void dispose() {
+    _scannerController.dispose(); // Dispose of the scanner controller
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.translate('qr_scanner')),
-      ),
       body: Stack(
         children: [
           MobileScanner(
+            controller: _scannerController,
             onDetect: (barcodeCapture) {
               if (!_hasScanned) {
                 final List<Barcode> barcodes = barcodeCapture.barcodes;
@@ -131,7 +145,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
       bottomNavigationBar: GoBackNavigator(
         onTabSelected: (tab) {
           switch (tab) {
-            case 'main':
+            case 'back':
               Navigator.pop(context);
             case 'exit':
               SystemNavigator.pop();

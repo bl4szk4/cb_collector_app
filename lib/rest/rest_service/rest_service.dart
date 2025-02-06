@@ -36,18 +36,49 @@ class RestService {
         dynamic body,
         T Function(Map<String, dynamic>)? parser,
       }) async {
-    final url = Uri.parse('$baseUrl$endpoint');
+    final url = endpoint.startsWith('http') ? Uri.parse(endpoint) : Uri.parse('$baseUrl$endpoint');
+
     try {
       logger.i('Request: $method $url');
-      if (body != null) logger.i('Body: $body');
+      if (body != null) logger.i('Body: ${json.encode(body)}');
+
+      headers ??= {};
+      headers['Content-Type'] = 'application/json';
 
       final response = await (method == 'POST'
-          ? http.post(url, headers: headers, body: json.encode(body))
+          ? http.post(url, headers: headers, body: utf8.encode(json.encode(body)))
           : http.get(url, headers: headers))
           .timeout(timeoutDuration);
 
+      if (response.statusCode == 307) {
+        final newUrl = response.headers['location'];
+        if (newUrl != null) {
+          return _makeRequest<T>(
+            newUrl.replaceFirst(baseUrl, ''),
+            method: method,
+            headers: headers,
+            body: body,
+            parser: parser,
+          );
+        }
+      }
+
+      logger.i('Status: ${response.statusCode}');
+      logger.i('Headers: ${response.headers}');
       logger.i('Response: ${response.body}');
-      final jsonResponse = json.decode(response.body);
+
+      if (response.statusCode != 200) {
+        throw Exception("HTTP ${response.statusCode}: ${response.body}");
+      }
+
+      if (response.body.isEmpty) {
+        throw Exception("Empty response from $method request to $endpoint");
+      }
+
+      final jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      if (jsonResponse is List) {
+        return parser != null ? parser({'items': jsonResponse}) : jsonResponse as T;
+      }
       return parser != null ? parser(jsonResponse) : jsonResponse as T;
     } catch (e) {
       throw Exception("Error in $method request to $endpoint: $e");
@@ -152,7 +183,7 @@ class RestService {
   Future<ItemsListDTO> getItems(LoggedUser user) async {
     return _getWithAuth(
       user,
-      '/item/get-items/',
+      '/item/get_items_for_user/',
       parser: (json) => ItemsListDTO.fromJson(json),
     );
   }

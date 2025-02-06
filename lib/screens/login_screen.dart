@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacementNamed(context, '/main-screen');
       } else {
         _message = 'Login failed: ${response.error.toString()}';
+        Navigator.pushReplacementNamed(context, '/home-screen');
       }
     });
   }

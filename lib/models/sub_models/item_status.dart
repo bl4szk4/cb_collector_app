@@ -1,3 +1,3 @@
 enum ItemStatus{
-  Ordered, Delivered, Opened, Disposed
+  Ordered, Delivered, Opened, Disposed, Emmpty, unknown
 }

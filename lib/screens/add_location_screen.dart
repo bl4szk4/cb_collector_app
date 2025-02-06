@@ -212,7 +212,7 @@ class _AddLocationScreenState extends State<AddLocationScreen> {
         onTabSelected: (tab) {
           switch (tab) {
             case 'back':
-              Navigator.pushNamed(context, '/main-menu');
+              Navigator.pushNamed(context, '/main-screen');
               break;
             case 'exit':
               SystemNavigator.pop();

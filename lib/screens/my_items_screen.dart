@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
+import 'package:pbl_collector/models/item_details_list.dart';
 import 'package:pbl_collector/models/items_list.dart';
 import 'package:pbl_collector/models/item_details.dart';
 import '../models/service_response.dart';
@@ -29,9 +30,6 @@ class _ChemicalsListScreenState extends State<MyItemsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.translate('chemical_items_list')),
-      ),
       body: FutureBuilder<ServiceResponse<ItemsList>>(
         future: _itemsFuture,
         builder: (context, snapshot) {
@@ -71,25 +69,70 @@ class _ChemicalsListScreenState extends State<MyItemsScreen> {
     );
   }
 
-  Widget _buildItemTile(ItemDetails item) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        leading: Icon(
-          item.userId == item.currentUser ? Icons.check_circle : Icons.cancel,
-          color: item.userId == item.currentUser ? Colors.green : Colors.red,
-        ),
-        title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text('Status: ${item.status.name}'),
-        trailing: Text('ID: ${item.id}'),
+  Widget _buildItemTile(ItemDetailsList item) {
+    return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(
-            context,
-            '/items/details',
-            arguments: item,
-          );
-        },
+      Navigator.pushNamed(
+        context,
+        '/items/details',
+        arguments: item,
+      );
+    },
+    child: Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              item.userId == item.currentUser ? Icons.check_circle : Icons.cancel,
+              color: item.userId == item.currentUser ? Colors.green : Colors.red,
+              size: 24,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Status: ${item.status.name}',
+                    style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  'ID: ${item.id}',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Exp: ${item.expirationDay?.toLocal().toString().split(' ')[0] ?? 'N/A'}',
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+
+              ],
+            ),
+          ],
+        ),
+
       ),
+    )
     );
   }
+
 }

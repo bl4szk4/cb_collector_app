@@ -13,7 +13,7 @@ class TokenDTO implements DTO<TokenDTO>{
   @override
   factory TokenDTO.fromJson(Map<String, dynamic> json) {
     return TokenDTO(
-      access: json['access'],
+      access: json['jwt_token'],
     );
   }
 

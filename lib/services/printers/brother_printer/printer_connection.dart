@@ -9,7 +9,7 @@ class Connection {
   final Duration _timeoutStandard = Duration(seconds: 5);
   final Duration _timeoutFlush = Duration(seconds: 1);
   final Duration _timeoutLong = Duration(seconds: 30);
-  bool _isClosed = false; // Dodana flaga stanu połączenia
+  bool _isClosed = false;
 
   Connection._();
 
@@ -23,10 +23,10 @@ class Connection {
     try {
       _socket = await Socket.connect(host, port).timeout(_timeoutStandard);
       _broadcastStream = _socket.asBroadcastStream();
-      _isClosed = false; // Połączenie zostało poprawnie otwarte
+      _isClosed = false;
       await flush();
     } catch (e) {
-      _isClosed = true; // Oznacz jako zamknięte w przypadku niepowodzenia
+      _isClosed = true;
       throw Exception('Failed to connect: $e');
     }
   }

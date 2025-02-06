@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
+import 'package:pbl_collector/screens/print_screen.dart';
+import 'package:pbl_collector/services/printers/printer_service.dart';
 import '../models/item_details.dart';
 import '../models/logged_user.dart';
 import '../screens/add_location_screen.dart';
@@ -22,7 +24,6 @@ class MainController extends StatefulWidget {
   @override
   _MainControllerState createState() => _MainControllerState();
 
-  // Dodanie getterów do właściwości `service` i `user`
   Service get service => _MainControllerState.instance.service;
   LoggedUser get user => _MainControllerState.instance.user;
 }
@@ -33,6 +34,7 @@ class _MainControllerState extends State<MainController> {
   final Service service = Service();
   final LoggedUser user = LoggedUser();
   final Logger logger = Logger();
+  late final PrintingService printingService;
 
   @override
   void initState() {
@@ -45,8 +47,17 @@ class _MainControllerState extends State<MainController> {
     logger.i("Initializing Controller...");
     await service.loadLocale();
     await service.init(widget);
+
+    try {
+      printingService = await PrintingService.create(
+      );
+      logger.i("PrintingService initialized successfully.");
+    } catch (e) {
+      logger.e("Error initializing PrintingService: $e");
+    }
+
     logger.i("Controller initialized");
-    setState(() {}); // Update UI after initialization
+    setState(() {});
   }
 
   void _setLocale(Locale locale) async {
@@ -60,7 +71,7 @@ class _MainControllerState extends State<MainController> {
       debugShowCheckedModeBanner: false,
       title: 'CB Scanner',
       theme: ThemeData.dark(),
-      locale: service.locale, // Locale set dynamically
+      locale: service.locale,
       supportedLocales: const [
         Locale('en'),
         Locale('pl'),
@@ -110,6 +121,7 @@ class _MainControllerState extends State<MainController> {
         return ChangeLocationScreen(mainController: widget, itemId: itemId);
       },
       '/add-location': (context) => AddLocationScreen(mainController: widget),
+      '/print-screen': (context) => PrinterScreen(printingService: printingService),
     };
   }
 }
