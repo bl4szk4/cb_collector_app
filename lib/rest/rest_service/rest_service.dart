@@ -92,6 +92,7 @@ class RestService {
         required T Function(Map<String, dynamic>) parser,
       }) async {
     final url = Uri.parse('$baseUrl$endpoint').replace(queryParameters: params);
+    logger.i(url);
     return _makeRequest(
       url.toString(),
       method: 'GET',
@@ -191,8 +192,18 @@ class RestService {
   Future<ItemDetailsDTO> getItemDetails(LoggedUser user, String itemQR) async {
     return _getWithAuth(
       user,
-      '/item/get-item/',
+      '/item/get_item_detailed/',
       params: {"item_qr_code": itemQR},
+      parser: (json) => ItemDetailsDTO.fromJson(json),
+    );
+  }
+
+  Future<ItemDetailsDTO> getItemDetailsById(LoggedUser user, int itemId) async {
+    logger.i("sending $itemId");
+    return _getWithAuth(
+      user,
+      '/item/get_item_detailed/{}',
+      params: {"item_id": itemId.toString()},
       parser: (json) => ItemDetailsDTO.fromJson(json),
     );
   }

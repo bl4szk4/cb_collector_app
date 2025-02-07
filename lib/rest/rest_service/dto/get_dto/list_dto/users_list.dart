@@ -6,7 +6,7 @@ class UsersListDTO{
   UsersListDTO({required this.usersList});
 
   factory UsersListDTO.fromJson(dynamic json){
-    var users = json["users"];
+    var users = json is List? json : json["users"];
 
     List<UserDetailsDTO> usersList = users.map((user) => UsersListDTO.fromJson(user)).toList();
 

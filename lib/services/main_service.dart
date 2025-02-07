@@ -106,41 +106,25 @@ class Service{
 
   }
 
-  // Future<ServiceResponse<ItemDetails>> getItemDetails(String itemQR) async{
-  //     try{
-  //       ItemDetailsDTO responseDTO = await restRepository.getItemDetails(controller.user, itemQR);
-  //       return ServiceResponse(data: ItemDetails.fromDTO(responseDTO), error: ServiceErrors.ok);
-  //     } catch (e){
-  //       logger.e(e.toString());
-  //       return ServiceResponse(data: null, error: ServiceErrors.apiError);
-  //
-  //     }
-  // }
-  Future<ServiceResponse<ItemDetails>> getItemDetails(String itemQR) async {
-    try {
-      // Przykładowa generacja danych DTO
-      final mockItemsListDTO =
-          ItemDetailsDTO(
-            id: 1,
-            name: "Acetic Acid",
-            casNumber: "64-19-7",
-            pCode: "P12345",
-            userId: 101,
-            currentUser: 101,
-            status: ItemStatus.Opened,
-            expirationDay: DateTime.now().add(const Duration(days: 365)),
-            locationId: 10,
-          );
+  Future<ServiceResponse<ItemDetails>> getItemDetailsWithQRCode(String itemQR) async{
+      try{
+        ItemDetailsDTO responseDTO = await restRepository.getItemDetailsWithQrCode(controller.user, itemQR);
+        return ServiceResponse(data: ItemDetails.fromDTO(responseDTO), error: ServiceErrors.ok);
+      } catch (e){
+        logger.e(e.toString());
+        return ServiceResponse(data: null, error: ServiceErrors.apiError);
 
-      return ServiceResponse(
-        data: ItemDetails.fromDTO(mockItemsListDTO),
-        error: ServiceErrors.ok,
-      );
-    } catch (e) {
-      return ServiceResponse(
-        data: null,
-        error: ServiceErrors.apiError,
-      );
+      }
+  }
+
+  Future<ServiceResponse<ItemDetails>> getItemDetailsById(int itemId) async{
+    try{
+      ItemDetailsDTO responseDTO = await restRepository.getItemDetailsById(controller.user, itemId);
+      return ServiceResponse(data: ItemDetails.fromDTO(responseDTO), error: ServiceErrors.ok);
+    } catch (e){
+      logger.e(e.toString());
+      return ServiceResponse(data: null, error: ServiceErrors.apiError);
+
     }
   }
 

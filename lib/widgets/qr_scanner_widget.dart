@@ -59,7 +59,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
 
     if (widget.navigateToDetails) {
       // Try to fetch item details
-      final response = await widget.mainController.service.getItemDetails(code);
+      final response = await widget.mainController.service.getItemDetailsWithQRCode(code);
       if (response.error == ServiceErrors.ok && response.data != null) {
         Navigator.pushReplacementNamed(
           context,

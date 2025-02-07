@@ -70,8 +70,12 @@ class RestRepository {
     return await restService.getItems(user);
   }
 
-  Future<ItemDetailsDTO> getItemDetails(LoggedUser user, String itemQR) async {
+  Future<ItemDetailsDTO> getItemDetailsWithQrCode(LoggedUser user, String itemQR) async {
     return await restService.getItemDetails(user, itemQR);
+  }
+
+  Future<ItemDetailsDTO> getItemDetailsById(LoggedUser user, int itemId) async {
+    return await restService.getItemDetailsById(user, itemId);
   }
 
   Future<ItemDetailsDTO> assignItem(LoggedUser user, AssignToUserDto data) async {

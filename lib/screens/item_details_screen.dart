@@ -36,7 +36,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildItemDetails(widget.itemDetails),
             const SizedBox(height: 16),
@@ -100,23 +100,73 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   Widget _buildItemDetails(ItemDetails item) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name: ${item.name}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            Text('CAS Number: ${item.casNumber}', style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            Text('P-Code: ${item.pCode}', style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
-            const SizedBox(height: 12),
-            Text('Status: ${item.status.name}', style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
-            const SizedBox(height: 12),
+            _buildDetailRow('Name', item.name, fontSize: 20, isBold: true),
+            const Divider(),
+            _buildDetailRow('Status', item.status.name),
             if (item.expirationDay != null)
-              Text('Expiration Date: ${item.expirationDay!.toLocal()}'.split(' ')[0], style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
+              _buildDetailRow('Expiration Date', '${item.expirationDay!.toLocal()}'.split(' ')[0]),
+            _buildDetailRow('Item Type ID', item.itemTypeId.toString()),
+
+            const SizedBox(height: 12),
+            _buildSectionTitle('Owner'),
+            _buildDetailRow('Name', '${item.user.name} ${item.user.surname}'),
+            _buildDetailRow('Department', item.user.department?.name ?? 'N/A'),
+
+            const SizedBox(height: 12),
+            _buildSectionTitle('Current User'),
+            _buildDetailRow('Name', '${item.currentUser.name} ${item.currentUser.surname}'),
+            _buildDetailRow('Department', item.currentUser.department?.name ?? 'N/A'),
+
+            const SizedBox(height: 12),
+            _buildSectionTitle('Location'),
+            _buildDetailRow('Room', '${item.location.room.number}'),
+            _buildDetailRow('Department', item.location.room.department?.name ?? 'N/A'),
+            _buildDetailRow('QR Code', item.location.qrCode ?? 'N/A'),
+
+            const SizedBox(height: 12),
+            _buildSectionTitle('Safety Codes'),
+            _buildDetailRow('P-Codes', item.pCodes != null ? item.pCodes!.join(', ') : 'N/A'),
+            _buildDetailRow('H-Codes', item.hCodes != null ? item.hCodes!.join(', ') : 'N/A'),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, {double fontSize = 16, bool isBold = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '$label:',
+            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.right,
+              style: TextStyle(fontSize: fontSize, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
+      child: Text(
+        title,
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
       ),
     );
   }

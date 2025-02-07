@@ -71,13 +71,21 @@ class _ChemicalsListScreenState extends State<MyItemsScreen> {
 
   Widget _buildItemTile(ItemDetailsList item) {
     return GestureDetector(
-        onTap: () {
-      Navigator.pushNamed(
-        context,
-        '/items/details',
-        arguments: item,
-      );
-    },
+      onTap: () async {
+        final response = await widget.mainController.service.getItemDetailsById(item.id);
+
+        if (response.error == ServiceErrors.ok && response.data != null) {
+          Navigator.pushNamed(
+            context,
+            '/items/details',
+            arguments: response.data,
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to load item details')),
+          );
+        }
+      },
     child: Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
