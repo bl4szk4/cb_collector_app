@@ -275,9 +275,9 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> assignItem(int itemId) async {
+  Future<ServiceResponse<ItemDetails>> assignItem(int itemId, int userId) async {
     try {
-      AssignToUserDto params = AssignToUserDto(itemId: itemId);
+      AssignToUserDto params = AssignToUserDto(itemId: itemId, userId: userId);
       ItemDetailsDTO responseDTO = await restRepository.assignItem(
     controller.user, params
     );

@@ -13,7 +13,7 @@ class ChangeItemLocationDto implements DTO<ChangeItemLocationDto>{
   @override
   Map<String, dynamic> toJson(){
     return {
-      'item_id': itemId,
+      'id_item': itemId,
       'location_qr_code': locationQrCode
     };
   }

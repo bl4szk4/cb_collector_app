@@ -55,5 +55,12 @@
   "qr_scanner": "Skaner QR",
   "back": "Wróć",
   "exit": "Wyjdź",
-  "borrow": "Porzycz przedmiot"
+  "borrow": "Porzycz przedmiot",
+  "error_loading_users": "Błąd ładowania użytkowników",
+  "select_user_first": "Najpierw wybierz użytkownika",
+  "user_assigned_successfully": "Użytkownik przypisany pomyślnie",
+  "error_assigning_user": "Błąd przy przypisywaniu użytkownika",
+  "search_user": "Wyszukaj użytkownika",
+  "no_users_found": "Brak użytkowników",
+  "assign": "Przypisz"
 }

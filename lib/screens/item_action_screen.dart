@@ -73,7 +73,13 @@ class ItemActionScreen extends StatelessWidget {
             const SizedBox(height: 16),
             HalfWidthButton(
               text: AppLocalizations.of(context)!.translate('borrow'),
-              onPressed: () => _performAction(context, mainController.service.assignItem),
+              onPressed: () => {
+                Navigator.pushNamed(
+                  context,
+                  '/item/details/edit/assign',
+                  arguments: itemId,
+                )
+              },
             ),
             const SizedBox(height: 16),
             HalfWidthButton(

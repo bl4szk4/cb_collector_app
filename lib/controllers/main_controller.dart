@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
+import 'package:pbl_collector/screens/assign_to_user_screen.dart';
 import 'package:pbl_collector/screens/print_screen.dart';
 import 'package:pbl_collector/services/printers/printer_service.dart';
 import '../models/item_details.dart';
@@ -115,6 +116,10 @@ class _MainControllerState extends State<MainController> {
       '/item/details/edit': (context) {
         final itemId = ModalRoute.of(context)!.settings.arguments as int;
         return ItemActionScreen(mainController: widget, itemId: itemId);
+      },
+      '/item/details/edit/assign': (context){
+        final itemId = ModalRoute.of(context)!.settings.arguments as int;
+        return UserSelectionScreen(mainController: widget, itemId: itemId);
       },
       '/item/details/edit/location': (context) {
         final itemId = ModalRoute.of(context)!.settings.arguments as int;

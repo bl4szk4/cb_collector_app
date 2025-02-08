@@ -117,7 +117,7 @@ class RestService {
   Future<UsersListDTO> getListOfUsers(LoggedUser user, ListUsersParamsDto data) async {
     return _getWithAuth(
       user,
-      '/user/users/',
+      '/user/get_users/',
       params: data.toJson(),
       parser: (json) => UsersListDTO.fromJson(json),
     );
@@ -242,26 +242,30 @@ class RestService {
   }
 
   Future<ItemDetailsDTO> assignItem(LoggedUser user, AssignToUserDto data) {
-    return performItemAction(user, 'assign-to-user', data);
+    return performItemAction(user, 'assign_to_user', data);
   }
 
   Future<ItemDetailsDTO> returnItem(LoggedUser user, ReturnItemDto data) {
-    return performItemAction(user, 'return', data);
+    return performItemAction(user, 'return_to_owner', data);
   }
 
   Future<ItemDetailsDTO> changeItemLocation(LoggedUser user, ChangeItemLocationDto data) {
-    return performItemAction(user, 'change-location', data);
+    return performItemAction(user, 'change_location', data);
   }
 
   Future<ItemDetailsDTO> markMissingItem(LoggedUser user, ReturnItemDto data) {
-    return performItemAction(user, 'mark-missing', data);
+    return performItemAction(user, 'mark_missing', data);
   }
 
   Future<ItemDetailsDTO> markLowItem(LoggedUser user, ReturnItemDto data) {
-    return performItemAction(user, 'mark-low', data);
+    return performItemAction(user, 'mark_low_level', data);
   }
 
   Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, ReturnItemDto data) {
-    return performItemAction(user, 'mark-empty', data);
+    return performItemAction(user, 'mark_empty', data);
+  }
+
+  Future<ItemDetailsDTO> disposeItem(LoggedUser user, ReturnItemDto data) {
+    return performItemAction(user, 'dispose_of_item', data);
   }
 }

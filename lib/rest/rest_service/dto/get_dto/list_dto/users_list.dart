@@ -1,14 +1,14 @@
 import '../user_details_dto.dart';
 
-class UsersListDTO{
+class UsersListDTO {
   List<UserDetailsDTO> usersList;
 
   UsersListDTO({required this.usersList});
 
-  factory UsersListDTO.fromJson(dynamic json){
-    var users = json is List? json : json["users"];
-
-    List<UserDetailsDTO> usersList = users.map((user) => UsersListDTO.fromJson(user)).toList();
+  factory UsersListDTO.fromJson(dynamic json) {
+    var users = (json is List) ? json : json["items"];
+    List<UserDetailsDTO> usersList =
+    (users as List).map((user) => UserDetailsDTO.fromJson(user)).toList();
 
     return UsersListDTO(usersList: usersList);
   }
