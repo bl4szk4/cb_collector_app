@@ -12,7 +12,7 @@ class ItemDetails{
   int userId;
   User user;
   int locationId;
-  Location location;
+  Location? location;
   ItemStatus status;
   int currentUserId;
   User currentUser;
@@ -28,7 +28,7 @@ class ItemDetails{
     required this.userId,
     required this.user,
     required this.locationId,
-    required this.location,
+    this.location,
     required this.status,
     required this.currentUserId,
     required this.currentUser,
@@ -51,7 +51,9 @@ class ItemDetails{
       pCodes: dto.pCodes,
       hCodes: dto.hCodes,
       locationId: dto.locationId,
-      location: Location.fromDTO(dto.location),
+      location: dto.location != null
+        ?Location.fromDTO(dto.location!)
+        : null,
       expirationDay: dto.expirationDay,
       status: dto.status,
       itemTypeId: dto.itemTypeId,

@@ -44,6 +44,17 @@ class _MainControllerState extends State<MainController> {
     _init();
   }
 
+  void _logOut(BuildContext context) {
+    logger.i("Logging out...");
+
+    service.logout();
+
+    Future.microtask(() {
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    });
+  }
+
+
   Future<void> _init() async {
     logger.i("Initializing Controller...");
     await service.loadLocale();
@@ -92,7 +103,13 @@ class _MainControllerState extends State<MainController> {
     return {
       '/home': (context) => HomeScreen(mainController: widget),
       '/login': (context) => LoginScreen(mainController: widget),
-      '/main-screen': (context) => MainScreen(),
+      '/log-out': (context) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _logOut(context);
+        });
+        return const SizedBox.shrink();
+      },
+      '/main-screen': (context) => MainScreen(),  
       '/qr-scanner': (context) => QRScannerWidget(
         mainController: widget,
         onQRCodeScanned: (String code) {

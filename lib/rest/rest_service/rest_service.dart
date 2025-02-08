@@ -26,6 +26,7 @@ class RestService {
   final String baseUrl;
   final Logger logger = Logger();
   final Duration timeoutDuration = const Duration(seconds: 60);
+  static const List<int> acceptableStatusCodes = [200, 201, 204];
 
   RestService({required this.baseUrl});
 
@@ -67,7 +68,7 @@ class RestService {
       logger.i('Headers: ${response.headers}');
       logger.i('Response: ${response.body}');
 
-      if (response.statusCode != 200) {
+      if (!acceptableStatusCodes.contains(response.statusCode)) {
         throw Exception("HTTP ${response.statusCode}: ${response.body}");
       }
 

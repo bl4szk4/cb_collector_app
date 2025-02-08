@@ -40,27 +40,27 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
           children: [
             _buildItemDetails(widget.itemDetails),
             const SizedBox(height: 16),
-            FutureBuilder<ServiceResponse<BlobsList>>(
-              future: _labelFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError || snapshot.data == null || snapshot.data!.error != ServiceErrors.ok) {
-                  return Center(
-                    child: Text(AppLocalizations.of(context)!.translate('error_loading_label')),
-                  );
-                }
-
-                final blobs = snapshot.data!.data!.blobsList;
-                if (blobs.isEmpty) {
-                  return Center(
-                    child: Text(AppLocalizations.of(context)!.translate('no_labels_available')),
-                  );
-                }
-
-                return _buildLabelImage(blobs.first);
-              },
-            ),
+            // FutureBuilder<ServiceResponse<BlobsList>>(
+            //   future: _labelFuture,
+            //   builder: (context, snapshot) {
+            //     if (snapshot.connectionState == ConnectionState.waiting) {
+            //       return const Center(child: CircularProgressIndicator());
+            //     } else if (snapshot.hasError || snapshot.data == null || snapshot.data!.error != ServiceErrors.ok) {
+            //       return Center(
+            //         child: Text(AppLocalizations.of(context)!.translate('error_loading_label')),
+            //       );
+            //     }
+            //
+            //     final blobs = snapshot.data!.data!.blobsList;
+            //     if (blobs.isEmpty) {
+            //       return Center(
+            //         child: Text(AppLocalizations.of(context)!.translate('no_labels_available')),
+            //       );
+            //     }
+            //
+            //     return _buildLabelImage(blobs.first);
+            //   },
+            // ),
             const SizedBox(height: 16),
             HalfWidthButton(
               text: AppLocalizations.of(context)!.translate('print'),
@@ -106,31 +106,69 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildDetailRow('Name', item.name, fontSize: 20, isBold: true),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('item_name'),
+                item.name, fontSize: 20, isBold: true
+            ),
             const Divider(),
-            _buildDetailRow('Status', item.status.name),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('item_status'),
+                item.status.name
+            ),
             if (item.expirationDay != null)
-              _buildDetailRow('Expiration Date', '${item.expirationDay!.toLocal()}'.split(' ')[0]),
-            _buildDetailRow('Item Type ID', item.itemTypeId.toString()),
+              _buildDetailRow(
+                  AppLocalizations.of(context)!.translate('expiration_date'),
+                  '${item.expirationDay!.toLocal()}'.split(' ')[0]
+              ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('item_type_id'),
+                item.itemTypeId.toString()
+            ),
 
             const SizedBox(height: 12),
-            _buildSectionTitle('Owner'),
-            _buildDetailRow('Name', '${item.user.name} ${item.user.surname}'),
-            _buildDetailRow('Department', item.user.department?.name ?? 'N/A'),
+            _buildSectionTitle(AppLocalizations.of(context)!.translate('owner'),
+            ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('user_name'),
+                '${item.user.name} ${item.user.surname}'
+            ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('department'),
+                item.user.department?.name ?? 'N/A'
+            ),
 
             const SizedBox(height: 12),
-            _buildSectionTitle('Current User'),
-            _buildDetailRow('Name', '${item.currentUser.name} ${item.currentUser.surname}'),
-            _buildDetailRow('Department', item.currentUser.department?.name ?? 'N/A'),
+            _buildSectionTitle(
+              AppLocalizations.of(context)!.translate('current_user'),
+            ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('user_name'),
+                '${item.currentUser.name} ${item.currentUser.surname}'
+            ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('department'),
+                item.currentUser.department?.name ?? 'N/A'
+            ),
 
             const SizedBox(height: 12),
-            _buildSectionTitle('Location'),
-            _buildDetailRow('Room', '${item.location.room.number}'),
-            _buildDetailRow('Department', item.location.room.department?.name ?? 'N/A'),
-            _buildDetailRow('QR Code', item.location.qrCode ?? 'N/A'),
+            _buildSectionTitle(AppLocalizations.of(context)!.translate('location'),
+            ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('room'),
+                item.location?.room.number ?? 'N/A'
+            ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('department'),
+                item.location?.room.department?.name ?? 'N/A'
+            ),
+            _buildDetailRow(
+                AppLocalizations.of(context)!.translate('qr_code'),
+                item.location?.qrCode ?? 'N/A'
+            ),
 
             const SizedBox(height: 12),
-            _buildSectionTitle('Safety Codes'),
+            _buildSectionTitle(AppLocalizations.of(context)!.translate('safety_codes'),
+                ),
             _buildDetailRow('P-Codes', item.pCodes != null ? item.pCodes!.join(', ') : 'N/A'),
             _buildDetailRow('H-Codes', item.hCodes != null ? item.hCodes!.join(', ') : 'N/A'),
           ],

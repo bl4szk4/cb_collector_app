@@ -98,8 +98,12 @@ class RestRepository {
     return await restService.markLowItem(user, data);
   }
 
-  Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, ReturnItemDto data) async {
+    Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, ReturnItemDto data) async {
     return await restService.markEmptyItem(user, data);
+  }
+
+  Future<ItemDetailsDTO> disposeItem(LoggedUser user, ReturnItemDto data) async {
+    return await restService.disposeItem(user, data);
   }
 
   Future<BlobListDto> printLabels(LoggedUser user, ItemLabelDto data) async {

@@ -86,11 +86,9 @@ class Service{
     }
   }
 
-  Future<ServiceResponse> logout() async{
+  Future<void> logout() async{
     controller.user.isLogged = false;
     controller.user.token = null;
-
-    return ServiceResponse(data: null, error: ServiceErrors.ok);
   }
 
   Future<ServiceResponse<UsersList>> getUsersList(int? departmentId, int? facultyId) async{
@@ -326,7 +324,7 @@ class Service{
   Future<ServiceResponse<ItemDetails>> disposeItem(int itemId) async {
     try {
       ReturnItemDto params = ReturnItemDto(itemId: itemId);
-      ItemDetailsDTO responseDTO = await restRepository.markEmptyItem(
+      ItemDetailsDTO responseDTO = await restRepository.disposeItem(
           controller.user, params
       );
       return ServiceResponse(

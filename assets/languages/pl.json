@@ -62,5 +62,18 @@
   "error_assigning_user": "Błąd przy przypisywaniu użytkownika",
   "search_user": "Wyszukaj użytkownika",
   "no_users_found": "Brak użytkowników",
-  "assign": "Przypisz"
+  "assign": "Przypisz",
+  "item_name": "Nazwa",
+  "item_status": "Status",
+  "expiration_date": "Data ważności",
+  "item_type_id": "Typ ID",
+  "user_name": "Imię",
+  "current_user": "Obecny właściciel",
+  "department": "Katedra",
+  "location": "Lokalizacja",
+  "room": "Pokój",
+  "qr_code": "Kod QR",
+  "safety_codes": "Kody bezpieczeństwa",
+  "owner": "Właściciel",
+  "logged_out_successfully": "Wylogowano"
 }

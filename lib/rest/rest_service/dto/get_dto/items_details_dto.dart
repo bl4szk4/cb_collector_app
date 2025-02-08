@@ -16,7 +16,7 @@ class ItemDetailsDTO {
   int userId;
   UserDetailsDTO user;
   int locationId;
-  LocationDTO location;
+  LocationDTO? location;
   ItemStatus status;
   int currentUserId;
   UserDetailsDTO currentUser;
@@ -32,7 +32,7 @@ class ItemDetailsDTO {
     required this.userId,
     required this.user,
     required this.locationId,
-    required this.location,
+    this.location,
     required this.status,
     required this.currentUserId,
     required this.currentUser,
@@ -53,7 +53,9 @@ class ItemDetailsDTO {
     final currentUser = UserDetailsDTO.fromJson(json["current_user"]);
     final locationId = json["location_id"] as int;
 
-    final location = LocationDTO.fromJson(json["location"]);
+    final location = json["location"] != null
+      ?LocationDTO.fromJson(json["location"])
+      : null;
 
     final itemTypeId = json["item_type_id"] as int;
     final itemType = ItemTypeDTO.fromJson(json["item_type"]);

@@ -62,5 +62,18 @@
   "error_assigning_user": "Error assigning user",
   "search_user": "Search user",
   "no_users_found": "No users found",
-  "assign": "Assign"
+  "assign": "Assign",
+  "item_name": "Name",
+  "item_status": "Item status",
+  "expiration_date": "Expiration date",
+  "item_type_id": "Item type ID",
+  "user_name": "Name",
+  "current_user": "Current user",
+  "department": "Department",
+  "location": "Location",
+  "room": "Room",
+  "qr_code": "QR Code",
+  "safety_codes": "Safety codes",
+  "owner": "Owner",
+  "logged_out_successfully": "Logged out successfully"
 }

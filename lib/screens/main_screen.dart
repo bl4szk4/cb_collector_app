@@ -33,6 +33,7 @@ class MainScreen extends StatelessWidget {
             FullWidthButton(
               text:  AppLocalizations.of(context)!.translate('log_out'),
               onPressed: () {
+
                 Navigator.pushNamed(context, '/log-out');
               },
             ),
