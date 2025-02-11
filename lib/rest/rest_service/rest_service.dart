@@ -6,9 +6,11 @@ import 'package:pbl_collector/rest/rest_service/dto/get_dto/location_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/room_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/assign_to_user_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/change_item_location_dto.dart';
+import 'package:pbl_collector/rest/rest_service/dto/post_dto/item_label_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/list_users_params.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dart';
 import 'package:pbl_collector/models/logged_user.dart';
+import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_list_dto.dart';
 import 'dto/get_dto/list_dto/department_list_dto.dart';
 import 'dto/get_dto/login_dto.dart';
@@ -209,6 +211,21 @@ class RestService {
     );
   }
 
+  Future<ItemQRCodeDto> getItemQRCode(
+      LoggedUser user,
+      int itemId,
+      ) async {
+    return _makeRequest(
+      '/item/get_qr_code_for_item/$itemId',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${user.token?.access}',
+      },
+      parser: (json) => ItemQRCodeDto.fromJson(json),
+    );
+  }
+
   Future<BlobListDto> printLabel(
       LoggedUser user,
       dynamic data,
@@ -246,7 +263,7 @@ class RestService {
     return performItemAction(user, 'assign_to_user', data);
   }
 
-  Future<ItemDetailsDTO> returnItem(LoggedUser user, ReturnItemDto data) {
+  Future<ItemDetailsDTO> returnItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'return_to_owner', data);
   }
 
@@ -254,19 +271,19 @@ class RestService {
     return performItemAction(user, 'change_location', data);
   }
 
-  Future<ItemDetailsDTO> markMissingItem(LoggedUser user, ReturnItemDto data) {
+  Future<ItemDetailsDTO> markMissingItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'mark_missing', data);
   }
 
-  Future<ItemDetailsDTO> markLowItem(LoggedUser user, ReturnItemDto data) {
+  Future<ItemDetailsDTO> markLowItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'mark_low_level', data);
   }
 
-  Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, ReturnItemDto data) {
+  Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'mark_empty', data);
   }
 
-  Future<ItemDetailsDTO> disposeItem(LoggedUser user, ReturnItemDto data) {
+  Future<ItemDetailsDTO> disposeItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'dispose_of_item', data);
   }
 }

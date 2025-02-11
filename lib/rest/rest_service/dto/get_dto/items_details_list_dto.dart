@@ -1,5 +1,4 @@
 import '../../../../models/sub_models/item_status.dart';
-import '../../../../models/sub_models/blob_file.dart';
 
 class ItemDetailsListDTO{
   int id;

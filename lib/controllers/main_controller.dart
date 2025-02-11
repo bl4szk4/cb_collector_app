@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pbl_collector/screens/assign_to_user_screen.dart';
 import 'package:pbl_collector/screens/print_screen.dart';
 import 'package:pbl_collector/services/printers/printer_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../models/item_details.dart';
 import '../models/logged_user.dart';
 import '../screens/add_location_screen.dart';
@@ -21,6 +23,7 @@ import '../services/main_service.dart';
 
 class MainController extends StatefulWidget {
   const MainController({Key? key}) : super(key: key);
+  MobileScannerController get scannerController => _MainControllerState.instance.globalScannerController;
 
   @override
   _MainControllerState createState() => _MainControllerState();
@@ -31,6 +34,7 @@ class MainController extends StatefulWidget {
 
 class _MainControllerState extends State<MainController> {
   static late _MainControllerState instance;
+  final MobileScannerController globalScannerController = MobileScannerController();
 
   final Service service = Service();
   final LoggedUser user = LoggedUser();
@@ -41,7 +45,13 @@ class _MainControllerState extends State<MainController> {
   void initState() {
     super.initState();
     instance = this;
+    _initCamera();
     _init();
+  }
+
+  Future<void> _initCamera() async {
+    await Permission.camera.request();
+    globalScannerController.start();
   }
 
   void _logOut(BuildContext context) {
@@ -109,9 +119,10 @@ class _MainControllerState extends State<MainController> {
         });
         return const SizedBox.shrink();
       },
-      '/main-screen': (context) => MainScreen(),  
+      '/main-screen': (context) => MainScreen(),
       '/qr-scanner': (context) => QRScannerWidget(
         mainController: widget,
+        scannerController: globalScannerController,
         onQRCodeScanned: (String code) {
           Navigator.pushNamed(context, '/login', arguments: code);
         },
@@ -120,6 +131,7 @@ class _MainControllerState extends State<MainController> {
       ),
       '/qr-scanner/details': (context) => QRScannerWidget(
         mainController: widget,
+        scannerController: globalScannerController,
         onQRCodeScanned: (String code) {},
         navigateToDetails: true,
         instruction: "Scan item",
@@ -143,7 +155,15 @@ class _MainControllerState extends State<MainController> {
         return ChangeLocationScreen(mainController: widget, itemId: itemId);
       },
       '/add-location': (context) => AddLocationScreen(mainController: widget),
-      '/print-screen': (context) => PrinterScreen(printingService: printingService),
+      '/print-screen': (context) {
+        final itemId = ModalRoute
+            .of(context)!
+            .settings
+            .arguments as int;
+        return PrinterScreen(printingService: printingService,
+            itemId: itemId,
+            mainController: widget);
+      }
     };
   }
 }

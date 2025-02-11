@@ -1,27 +1,31 @@
-class BlobDto{
-  int id;
-  String filename;
-  String fileUrl;
-  String fileType;
-  int fileSize;
+import 'dart:convert';
+import 'dart:typed_data';
 
-  BlobDto({
+import '../../../interfaces/dto.dart';
+
+class ItemQRCodeDto implements DTO<ItemQRCodeDto> {
+  final int id;
+  final Uint8List qrImage;
+
+  ItemQRCodeDto({
     required this.id,
-    required this.filename,
-    required this.fileUrl,
-    required this.fileSize,
-    required this.fileType,
+    required this.qrImage,
   });
 
-  @override
-  factory BlobDto.fromJson(Map<String, dynamic> json) {
-    return BlobDto(
+  factory ItemQRCodeDto.fromJson(Map<String, dynamic> json) {
+    final String base64String = json['qr_code'] as String;
+    final Uint8List decodedImage = base64Decode(base64String);
+    return ItemQRCodeDto(
       id: json['id'] as int,
-      filename: json['filename'] as String,
-      fileUrl: json['file_url'] as String,
-      fileSize: json['file_size'] as int,
-      fileType: json['file_type'] as String
+      qrImage: decodedImage,
     );
   }
 
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'qr_code': base64Encode(qrImage),
+    };
+  }
 }

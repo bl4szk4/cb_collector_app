@@ -15,10 +15,10 @@ class ChangeLocationScreen extends StatefulWidget {
   final int itemId;
 
   const ChangeLocationScreen({
-    super.key,
+    Key? key,
     required this.mainController,
     required this.itemId,
-  });
+  }) : super(key: key);
 
   @override
   _ChangeLocationScreenState createState() => _ChangeLocationScreenState();
@@ -31,6 +31,7 @@ class _ChangeLocationScreenState extends State<ChangeLocationScreen> {
       MaterialPageRoute(
         builder: (context) => QRScannerWidget(
           mainController: widget.mainController,
+          scannerController: widget.mainController.scannerController,
           onQRCodeScanned: (String code) async {
             final response = await widget.mainController.service.changeLocation(widget.itemId, code);
             if (response.error == ServiceErrors.ok && response.data != null) {
@@ -52,7 +53,6 @@ class _ChangeLocationScreenState extends State<ChangeLocationScreen> {
         ),
       ),
     );
-
   }
 
   void _navigateToAddLocation(BuildContext context) {

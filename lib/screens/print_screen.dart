@@ -1,95 +1,70 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
+import 'package:pbl_collector/controllers/main_controller.dart';
+import 'package:pbl_collector/enums/service_errors.dart';
+import 'package:pbl_collector/services/printers/printer_service.dart';
 
-import '../services/printers/printer_service.dart';
+import '../models/qr_code.dart';
+import '../widgets/navigators/go_back_navigator.dart';
 
 class PrinterScreen extends StatefulWidget {
   final PrintingService printingService;
+  final int itemId;
+  final MainController mainController;
 
-  const PrinterScreen({Key? key, required this.printingService})
-      : super(key: key);
+  const PrinterScreen({
+    Key? key,
+    required this.printingService,
+    required this.itemId,
+    required this.mainController,
+  }) : super(key: key);
 
   @override
   _PrinterScreenState createState() => _PrinterScreenState();
 }
 
 class _PrinterScreenState extends State<PrinterScreen> {
-  String _printerStatus = 'Status drukarki nieznany';
-  final TextEditingController _qrController = TextEditingController();
-  File? _selectedImage;
+  String _printerStatus = 'Loading QR code...';
+  bool _loading = true;
+  String? _error;
+  ItemLabel? _itemLabel;
 
   @override
   void initState() {
     super.initState();
-    _initializePrinterStatus();
+    _loadItemLabel();
   }
 
-  /// Inicjalizuje status drukarki
-  Future<void> _initializePrinterStatus() async {
-    setState(() {
-      _printerStatus = 'Serwis drukowania został zainicjalizowany.';
-    });
+  Future<void> _loadItemLabel() async {
+    final response = await widget.mainController.service.getItemQrCode(widget.itemId);
+    if (response.error == ServiceErrors.ok && response.data != null) {
+      setState(() {
+        _itemLabel = response.data;
+        _loading = false;
+        _printerStatus = 'QR code loaded.';
+      });
+    } else {
+      setState(() {
+        _error = 'Error loading QR code.';
+        _loading = false;
+        _printerStatus = 'Error loading QR code.';
+      });
+    }
   }
 
-  /// Drukuje kod QR
   Future<void> _printQRCode() async {
-    final data = _qrController.text.trim();
-    if (data.isEmpty) {
-      setState(() {
-        _printerStatus = 'Pole kodu QR nie może być puste.';
-      });
-      return;
-    }
-
+    if (_itemLabel == null) return;
+    setState(() {
+      _printerStatus = 'Printing QR code...';
+    });
     try {
-      final result = await widget.printingService.printCode(data);
+      final result = await widget.printingService.printQRCodeImage(_itemLabel!.qrImage);
       setState(() {
         _printerStatus = result;
       });
     } catch (e) {
       setState(() {
-        _printerStatus = 'Błąd drukowania kodu QR: $e';
-      });
-    }
-  }
-
-  /// Wybiera obraz z galerii
-  Future<void> _pickImage() async {
-    try {
-      final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        setState(() {
-          _selectedImage = File(pickedFile.path);
-          _printerStatus = 'Obraz wybrany: ${pickedFile.path}';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _printerStatus = 'Błąd podczas wybierania obrazu: $e';
-      });
-    }
-  }
-
-  /// Drukuje wybrany obraz
-  Future<void> _printImage() async {
-    if (_selectedImage == null) {
-      setState(() {
-        _printerStatus = 'Najpierw wybierz obraz.';
-      });
-      return;
-    }
-
-    try {
-      final result = await widget.printingService.printLabel(_selectedImage!);
-      setState(() {
-        _printerStatus = result;
-      });
-    } catch (e) {
-      setState(() {
-        _printerStatus = 'Błąd drukowania obrazu: $e';
+        _printerStatus = 'Error printing QR code: $e';
       });
     }
   }
@@ -97,14 +72,22 @@ class _PrinterScreenState extends State<PrinterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Drukowanie'),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: _loading
+            ? const Center(child: CircularProgressIndicator())
+            : _error != null
+            ? Center(child: Text(_error!))
+            : Column(
           children: [
-            // Wyświetlanie statusu drukarki
+            if (_itemLabel != null)
+              Image.memory(
+                _itemLabel!.qrImage,
+                fit: BoxFit.contain,
+                width: 300,
+                height: 300,
+              ),
+            const SizedBox(height: 20),
             Card(
               color: Colors.grey[50],
               elevation: 2,
@@ -122,53 +105,28 @@ class _PrinterScreenState extends State<PrinterScreen> {
               ),
             ),
             const SizedBox(height: 20),
-
-            // Pole tekstowe do wpisania treści kodu QR
-            TextField(
-              controller: _qrController,
-              decoration: InputDecoration(
-                labelText: 'Treść kodu QR',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                prefixIcon: const Icon(Icons.qr_code),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Przycisk "Drukuj QR"
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: _printQRCode,
-                icon: const Icon(Icons.qr_code),
-                label: const Text('Drukuj kod QR'),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Przycisk "Wybierz obraz"
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _pickImage,
-                icon: const Icon(Icons.image),
-                label: const Text('Wybierz obraz'),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Przycisk "Drukuj obraz"
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _printImage,
                 icon: const Icon(Icons.print),
-                label: const Text('Drukuj obraz'),
+                label: const Text('Print QR Code'),
               ),
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: GoBackNavigator(
+        onTabSelected: (tab) {
+          switch (tab) {
+            case 'back':
+              Navigator.pushNamed(context, '/my-items');
+              break;
+            case 'exit':
+              SystemNavigator.pop();
+              break;
+          }
+        },
       ),
     );
   }

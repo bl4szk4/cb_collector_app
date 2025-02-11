@@ -2,13 +2,13 @@
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:pbl_collector/enums/label_type.dart';
-import 'package:pbl_collector/models/blobs_list.dart';
 import 'package:pbl_collector/models/departments_list.dart';
 import 'package:pbl_collector/models/faculties_list.dart';
 import 'package:pbl_collector/models/item_details.dart';
 import 'package:pbl_collector/models/items_list.dart';
 import 'package:pbl_collector/models/location.dart';
 import 'package:pbl_collector/models/location_list.dart';
+import 'package:pbl_collector/models/qr_code.dart';
 import 'package:pbl_collector/models/room.dart';
 import 'package:pbl_collector/models/users_list.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_dto.dart';
@@ -28,10 +28,10 @@ import 'package:pbl_collector/rest/rest_service/dto/post_dto/change_item_locatio
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/item_label_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/list_users_params.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dart';
+import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_list_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/response_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/token_dto.dart';
-import '../models/sub_models/blob_file.dart';
 import '../models/sub_models/item_status.dart';
 import 'settings_service.dart';
 
@@ -254,19 +254,14 @@ class Service{
   //   }
   // }
 
-  Future<ServiceResponse<BlobsList>> getLabel(int id, LabelType labelType) async {
+  Future<ServiceResponse<ItemLabel>> getItemQrCode(int id) async {
     try {
-      // Mock data for labels
-      final mockBlobsList = BlobsList(
-        blobsList: [
-          BlobFile(
-            fileName: 'label_$id.png',
-            fileUrl: 'https://via.placeholder.com/150?text=Label+$id',
-          ),
-        ],
+      ItemQRCodeDto responseDTO = await restRepository.getItemQrCode(
+          controller.user, id
       );
-
-      return ServiceResponse(data: mockBlobsList, error: ServiceErrors.ok);
+      return ServiceResponse(
+          data: ItemLabel.fromDTO(responseDTO), error: ServiceErrors.ok
+      );
     } catch (e) {
       logger.e(e.toString());
       return ServiceResponse(data: null, error: ServiceErrors.apiError);
@@ -291,7 +286,7 @@ class Service{
 
   Future<ServiceResponse<ItemDetails>> returnItem(int itemId) async {
     try {
-      ReturnItemDto params = ReturnItemDto(itemId: itemId);
+      GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
       ItemDetailsDTO responseDTO = await restRepository.returnItem(
           controller.user, params
       );
@@ -323,7 +318,7 @@ class Service{
 
   Future<ServiceResponse<ItemDetails>> disposeItem(int itemId) async {
     try {
-      ReturnItemDto params = ReturnItemDto(itemId: itemId);
+      GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
       ItemDetailsDTO responseDTO = await restRepository.disposeItem(
           controller.user, params
       );
@@ -339,7 +334,7 @@ class Service{
 
   Future<ServiceResponse<ItemDetails>> markLow(int itemId) async {
     try {
-      ReturnItemDto params = ReturnItemDto(itemId: itemId);
+      GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
       ItemDetailsDTO responseDTO = await restRepository.markLowItem(
           controller.user, params
       );
@@ -355,7 +350,7 @@ class Service{
 
   Future<ServiceResponse<ItemDetails>> markMissing(int itemId) async {
     try {
-      ReturnItemDto params = ReturnItemDto(itemId: itemId);
+      GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
       ItemDetailsDTO responseDTO = await restRepository.markMissingItem(
           controller.user, params
       );
@@ -371,7 +366,7 @@ class Service{
 
   Future<ServiceResponse<ItemDetails>> markEmpty(int itemId) async {
     try {
-      ReturnItemDto params = ReturnItemDto(itemId: itemId);
+      GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
       ItemDetailsDTO responseDTO = await restRepository.markEmptyItem(
           controller.user, params
       );

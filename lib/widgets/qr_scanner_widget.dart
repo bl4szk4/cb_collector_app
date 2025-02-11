@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/widgets/navigators/go_back_navigator.dart';
-import '../models/service_response.dart';
-import '../models/item_details.dart';
 import '../services/app_localizations.dart';
 import '../enums/service_errors.dart';
 
@@ -13,11 +12,13 @@ class QRScannerWidget extends StatefulWidget {
   final Function(String) onQRCodeScanned;
   final bool navigateToDetails;
   final String instruction;
+  final MobileScannerController scannerController;
 
   const QRScannerWidget({
     Key? key,
     required this.mainController,
     required this.onQRCodeScanned,
+    required this.scannerController,
     this.navigateToDetails = false,
     this.instruction = '',
   }) : super(key: key);
@@ -27,80 +28,17 @@ class QRScannerWidget extends StatefulWidget {
 }
 
 class _QRScannerWidgetState extends State<QRScannerWidget> {
-  late MobileScannerController _scannerController;
   bool _hasScanned = false;
   bool _showInstructions = true;
 
   @override
   void initState() {
     super.initState();
-    _scannerController = MobileScannerController();
-    Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        _showInstructions = false;
-      });
-    });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    setState(() {
-      _hasScanned = false; // Reset scanning state when dependencies change
-    });
-  }
-
-  void _handleScannedCode(BuildContext context, String code) async {
-    if (_hasScanned) return; // Prevent multiple scans
-
-    setState(() {
-      _hasScanned = true;
-    });
-
-    if (widget.navigateToDetails) {
-      // Try to fetch item details
-      final response = await widget.mainController.service.getItemDetailsWithQRCode(code);
-      if (response.error == ServiceErrors.ok && response.data != null) {
-        Navigator.pushReplacementNamed(
-          context,
-          '/items/details',
-          arguments: response.data,
-        );
-      } else {
-        Navigator.pop(context); // Return to the previous route on error
-        _showErrorDialog(context);
-      }
-    } else {
-      widget.onQRCodeScanned(code);
-    }
-  }
-
-  void _showErrorDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('error')),
-          content: Text(AppLocalizations.of(context)!.translate('error_loading_item_details')),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                setState(() {
-                  _hasScanned = false; // Reset scanning state after error
-                });
-              },
-              child: Text(AppLocalizations.of(context)!.translate('ok')),
-            ),
-          ],
-        );
-      },
-    );
+    widget.scannerController.start();
   }
 
   @override
   void dispose() {
-    _scannerController.dispose(); // Dispose of the scanner controller
     super.dispose();
   }
 
@@ -110,14 +48,14 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
       body: Stack(
         children: [
           MobileScanner(
-            controller: _scannerController,
+            controller: widget.scannerController,
             onDetect: (barcodeCapture) {
               if (!_hasScanned) {
                 final List<Barcode> barcodes = barcodeCapture.barcodes;
                 for (final barcode in barcodes) {
                   if (barcode.rawValue != null) {
                     String code = barcode.rawValue!;
-                    _handleScannedCode(context, code);
+                    _handleScannedCode(code);
                     break;
                   }
                 }
@@ -146,13 +84,66 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
         onTabSelected: (tab) {
           switch (tab) {
             case 'back':
-              Navigator.pop(context);
+              if (mounted) {
+                Navigator.pop(context);
+              }
+              break;
             case 'exit':
               SystemNavigator.pop();
               break;
           }
         },
       ),
+    );
+  }
+
+  void _handleScannedCode(String code) async {
+    if (_hasScanned) return;
+    if (!mounted) return;
+    setState(() {
+      _hasScanned = true;
+    });
+
+    if (widget.navigateToDetails) {
+      final response =
+      await widget.mainController.service.getItemDetailsWithQRCode(code);
+      if (!mounted) return;
+      if (response.error == ServiceErrors.ok && response.data != null) {
+        Navigator.pushReplacementNamed(context, '/items/details',
+            arguments: response.data);
+      } else {
+
+        _showErrorDialog();
+      }
+    } else {
+      widget.onQRCodeScanned(code);
+    }
+  }
+
+  void _showErrorDialog() {
+    if (!mounted) return;
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.translate('error')),
+          content: Text(AppLocalizations.of(context)!
+              .translate('error_loading_item_details')),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                if (mounted) {
+                  setState(() {
+                    _hasScanned = false;
+                  });
+                }
+              },
+              child: Text(AppLocalizations.of(context)!.translate('ok')),
+            ),
+          ],
+        );
+      },
     );
   }
 }

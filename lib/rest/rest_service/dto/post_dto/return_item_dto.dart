@@ -1,10 +1,10 @@
 import '../../../interfaces/dto.dart';
 
 
-class ReturnItemDto implements DTO<ReturnItemDto>{
+class GeneralItemIDDTO implements DTO<GeneralItemIDDTO>{
   int itemId;
 
-  ReturnItemDto({
+  GeneralItemIDDTO({
     required this.itemId,
   });
 
