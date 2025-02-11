@@ -13,7 +13,6 @@ import 'imin_printer/imin_printer_service.dart';
 
 class PrintingService {
   final IminPrinterService _iminPrinterService;
-  BrotherPrinterService? _brotherPrinterService;
   final String _brotherHost;
   final int _brotherPort;
   final Logger logger = Logger();
@@ -33,11 +32,8 @@ class PrintingService {
   }
 
   Future<BrotherPrinterService> _getBrotherPrinterService() async {
-    if (_brotherPrinterService == null) {
-      final connection = await Connection.connect(_brotherHost, _brotherPort);
-      _brotherPrinterService = BrotherPrinterService(connection: connection);
-    }
-    return _brotherPrinterService!;
+    final connection = await Connection.connect(_brotherHost, _brotherPort);
+    return BrotherPrinterService(connection: connection);
   }
 
   Future<String> printQRCodeImage(Uint8List imageData) async {
@@ -46,8 +42,6 @@ class PrintingService {
       final printerType = settings['printCodes'];
       logger.i('Printer: $printerType');
 
-      // Zmieniona metoda – generujemy plik przy pomocy _createTempFileFromImage,
-      // która dekoduje i re‑enkodowuje obraz do JPEG.
       final file = await _createTempFileFromImage(imageData);
 
       if (printerType == 'internal') {
@@ -66,21 +60,18 @@ class PrintingService {
     }
   }
 
-  /// Poprawiona metoda – dekoduje przekazane imageData i ponownie enkoduje do JPEG.
   Future<File> _createTempFileFromImage(Uint8List imageData) async {
     try {
       final decodedImage = img.decodeImage(imageData);
       if (decodedImage == null) {
         throw Exception('Error in decoding provided image data.');
       }
-      // Re-enkodujemy obraz do JPEG; ustawienie quality na 100 daje wysoką jakość
       final jpegData = img.encodeJpg(decodedImage, quality: 100);
 
       final tempDir = await getTemporaryDirectory();
       final tempFile = File('${tempDir.path}/qr_code_print.jpeg');
       await tempFile.writeAsBytes(jpegData);
 
-      // Logowanie rozmiaru pliku dla debugowania
       final fileSize = tempFile.lengthSync();
       logger.i('Generated file size: $fileSize bytes');
 

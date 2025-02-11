@@ -72,7 +72,7 @@ class BrotherPrinterService {
       }
 
       final fileSize = jpegFile.lengthSync();
-      logger.i(fileSize);
+      logger.i('File size: $fileSize bytes');
       final printCommand = Print(
         mode,
         cut,
@@ -94,8 +94,11 @@ class BrotherPrinterService {
       }
     } catch (e) {
       throw Exception('Exception printing file: $e');
+    } finally {
+      await closeConnection();
     }
   }
+
 
   Future<void> waitForReadyState() async {
     while (true) {
