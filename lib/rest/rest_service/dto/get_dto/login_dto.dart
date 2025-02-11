@@ -2,14 +2,16 @@ import '../../../interfaces/dto.dart';
 
 
 class LoginDTO implements DTO<LoginDTO>{
-  String qrCode;
+  String username;
+  String password;
 
-  LoginDTO({required this.qrCode});
+  LoginDTO({required this.username, required this.password});
 
   @override
   Map<String, dynamic> toJson(){
     return {
-      'qr_code': qrCode
+      'username': username,
+      'password': password
     };
   }
 

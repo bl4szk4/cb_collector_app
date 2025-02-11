@@ -72,9 +72,9 @@ class Service{
     logger.i("Service initialized successfully.");
   }
 
-  Future<ServiceResponse> login(String qrCode) async {
+  Future<ServiceResponse> login(String username, String password) async {
     try{
-      var loginDto = LoginDTO(qrCode: qrCode);
+      var loginDto = LoginDTO(username: username, password: password);
       TokenDTO loginResponse = await restRepository.login(loginDto);
       controller.user.token = Token(access: loginResponse.access);
       controller.user.isLogged = true;

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import '../enums/service_errors.dart';
@@ -23,9 +25,13 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
       _message = null;
     });
-
+    final Map<String, dynamic> credentials = jsonDecode(qrCode);
+    final String username = credentials['username'];
+    final String password = credentials['password'];
+    print(username);
+    print(password);
     final service = widget.mainController.service;
-    final response = await service.login(qrCode);
+    final response = await service.login(username, password);
 
     setState(() {
       _isLoading = false;

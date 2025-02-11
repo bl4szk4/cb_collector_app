@@ -112,10 +112,7 @@ class RestRepository {
   }
 
   Future<ItemQRCodeDto> getItemQrCode(LoggedUser user, int itemId) async{
-    // return await restService.getItemQRCode(user, itemId);
-    return ItemQRCodeDto.fromJson({
-      "id": 12,
-      "qr_code": "iVBORw0KGgoAAAANSUhEUgAAASIAAAEiAQAAAAB1xeIbAAABdUlEQVR4nO2ZQW6DMBBF3xSkLOEGOQq+Wm8GR+kN8DIS0e/CQ0PVSumiBBJmFpawnuQvazx8j03cj+HtDxAEFVRQQQW1d8o8ahisBvI8kzbVdQiqkySNYKm5GFBJkvSderyuQ1DZc1x9PpUdL8dga12HojpNWHrkikF5WMr1feo/VzwuNW90IyCDYCozy0vXXtW/BDWYmVl7y/trsTlb63ppquT9Lcc1tJgfgy11HYeylGs85ZsJ9YAlrpH3a1IUH98D0Ezu9PtGWn7uVf1zU2Xv6UagGytBI9FpOcTer0O5zxnOguF8MYGX//A5j6GkEWAu+u54AC9G+1b/rJTX+6/wubESUEXNWZ+69THLCRhagPA561Lzv7b0MSt59fmyOIq8X52a+5iWAOnjNPvOjXUdidL72Yu+xd3qwZQlwFIzAfkkS6uveFzqlz4miNwu7P5+1T83xfJpcDaV5YbbKXoKq1I/+pg+TAiqeK8NKqiggnoV6hPxu87zUW4JMwAAAABJRU5ErkJggg=="
-    });
+    return await restService.getItemQRCode(user, itemId);
+
   }
 }

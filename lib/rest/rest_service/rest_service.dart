@@ -6,7 +6,6 @@ import 'package:pbl_collector/rest/rest_service/dto/get_dto/location_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/room_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/assign_to_user_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/change_item_location_dto.dart';
-import 'package:pbl_collector/rest/rest_service/dto/post_dto/item_label_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/list_users_params.dart';
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dart';
 import 'package:pbl_collector/models/logged_user.dart';
@@ -205,8 +204,7 @@ class RestService {
     logger.i("sending $itemId");
     return _getWithAuth(
       user,
-      '/item/get_item_detailed/{}',
-      params: {"item_id": itemId.toString()},
+      '/item/get_item_detailed/$itemId',
       parser: (json) => ItemDetailsDTO.fromJson(json),
     );
   }
@@ -216,7 +214,7 @@ class RestService {
       int itemId,
       ) async {
     return _makeRequest(
-      '/item/get_qr_code_for_item/$itemId',
+      '/item/qr/$itemId',
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
