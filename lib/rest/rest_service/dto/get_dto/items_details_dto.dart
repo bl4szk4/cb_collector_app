@@ -2,14 +2,11 @@ import 'package:pbl_collector/rest/rest_service/dto/get_dto/department_dto.dart'
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/faculty_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/item_type_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/location_dto.dart';
-import 'package:pbl_collector/rest/rest_service/dto/get_dto/room_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/user_details_dto.dart';
 import 'package:logger/logger.dart';
 
-import '../../../../models/sub_models/item_status.dart';
-
 class ItemDetailsDTO {
-  static final Logger logger = Logger(); // 🔹 Użyjemy statycznego loggera, żeby nie tworzyć nowego dla każdej instancji
+  static final Logger logger = Logger();
 
   int id;
   String name;
@@ -17,7 +14,7 @@ class ItemDetailsDTO {
   UserDetailsDTO user;
   int locationId;
   LocationDTO? location;
-  ItemStatus status;
+  String status;
   int currentUserId;
   UserDetailsDTO currentUser;
   int itemTypeId;
@@ -63,10 +60,7 @@ class ItemDetailsDTO {
     final pCodes = (json["p_codes"] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
     final hCodes = (json["h_codes"] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
 
-    final status = ItemStatus.values.firstWhere(
-          (e) => e.toString().split('.').last == json['status'],
-      orElse: () => ItemStatus.unknown,
-    );
+    final status = json["status"];
 
     final expirationDay = json["termin_waz"] != null
         ? DateTime.tryParse(json["termin_waz"])

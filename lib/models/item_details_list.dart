@@ -1,12 +1,10 @@
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_list_dto.dart';
 
-import './sub_models/item_status.dart';
-
 class ItemDetailsList{
   int id;
   String name;
   int userId;
-  ItemStatus status;
+  String status;
   int currentUser;
   int itemTypeId;
   List<String>? pCodes = [];

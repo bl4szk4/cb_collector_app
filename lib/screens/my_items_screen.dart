@@ -107,7 +107,7 @@ class _ChemicalsListScreenState extends State<MyItemsScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Status: ${item.status.name}',
+                    'Status: ${item.status}',
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,

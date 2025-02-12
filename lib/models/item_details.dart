@@ -1,7 +1,6 @@
 import 'package:pbl_collector/models/sub_models/item_type.dart';
 import 'package:pbl_collector/models/user.dart';
 
-import './sub_models/item_status.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_dto.dart';
 
 import 'location.dart';
@@ -13,7 +12,7 @@ class ItemDetails{
   User user;
   int locationId;
   Location? location;
-  ItemStatus status;
+  String status;
   int currentUserId;
   User currentUser;
   int itemTypeId;

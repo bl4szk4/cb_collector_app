@@ -129,7 +129,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
             const Divider(),
             _buildDetailRow(
               AppLocalizations.of(context)!.translate('item_status'),
-              item.status.name,
+              item.status,
             ),
             if (item.expirationDay != null)
               _buildDetailRow(
@@ -169,10 +169,6 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
             _buildDetailRow(
               AppLocalizations.of(context)!.translate('department'),
               item.location?.room.department?.name ?? 'N/A',
-            ),
-            _buildDetailRow(
-              AppLocalizations.of(context)!.translate('qr_code'),
-              item.location?.qrCode ?? 'N/A',
             ),
             const SizedBox(height: 12),
             _buildSectionTitle(AppLocalizations.of(context)!.translate('safety_codes')),
