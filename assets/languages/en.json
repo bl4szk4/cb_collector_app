@@ -78,5 +78,6 @@
   "logged_out_successfully": "Logged out successfully",
   "scan": "Scan",
   "scan_id": "Scan ID",
-  "scan_your_id": "Scan your ID"
+  "scan_your_id": "Scan your ID",
+  "invalid_credentials": "Invalid credentials"
 }

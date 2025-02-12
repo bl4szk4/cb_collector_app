@@ -78,5 +78,6 @@
   "logged_out_successfully": "Wylogowano",
   "scan": "Skanuj",
   "scan_id": "Zeskanuj ID",
-  "scan_your_id": "Zeskanuj swój identyfikator"
+  "scan_your_id": "Zeskanuj swój identyfikator",
+  "invalid_credentials": "Błędne dane logowania"
 }

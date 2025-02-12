@@ -26,6 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
       _message = null;
     });
     final Map<String, dynamic> credentials = jsonDecode(qrCode);
+    if (!credentials.containsKey('username') || !credentials.containsKey('password')) {
+      setState(() {
+        _isLoading = false;
+          _message = AppLocalizations.of(context)!.translate('invalid_credentials');
+          Navigator.pushReplacementNamed(context, '/home');
+      });
+    }
     final String username = credentials['username'];
     final String password = credentials['password'];
 
@@ -39,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacementNamed(context, '/main-screen');
       } else {
         _message = 'Login failed: ${response.error.toString()}';
-        Navigator.pushReplacementNamed(context, '/home-screen');
+        Navigator.pushReplacementNamed(context, '/home');
       }
     });
   }
