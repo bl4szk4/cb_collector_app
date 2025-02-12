@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/item_details.dart';
 import 'package:pbl_collector/widgets/navigators/go_back_navigator.dart';
+import '../models/sub_models/item_details_route_arguments.dart';
 import '../services/app_localizations.dart';
 import '../models/service_response.dart';
 import '../enums/service_errors.dart';
@@ -28,7 +29,11 @@ class ItemActionScreen extends StatelessWidget {
       Navigator.pushReplacementNamed(
         context,
         '/items/details',
-        arguments: response.data,
+        arguments: ItemDetailsRouteArguments(
+          itemId: itemId,
+          routeOrigin: 'action',
+          itemDetails: response.data,
+        ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -39,6 +44,7 @@ class ItemActionScreen extends StatelessWidget {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

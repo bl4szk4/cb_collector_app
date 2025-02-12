@@ -136,13 +136,14 @@ class _MainControllerState extends State<MainController> {
         final args = ModalRoute.of(context)?.settings.arguments as ItemDetailsRouteArguments?;
         if (args == null) {
           return const Scaffold(
-            body: Center(child: Text("Nie przekazano argumentów")),
+            body: Center(child: Text("No arguments")),
           );
         }
         return ItemDetailsScreen(
           mainController: widget,
           itemId: args.itemId,
           routeOrigin: args.routeOrigin,
+          itemDetails: args.itemDetails
         );
       },
       '/item/details/edit': (context) {

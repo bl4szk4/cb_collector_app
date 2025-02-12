@@ -25,35 +25,35 @@ class ChangeLocationScreen extends StatefulWidget {
 }
 
 class _ChangeLocationScreenState extends State<ChangeLocationScreen> {
-  Future<void> _scanLocation(BuildContext context) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => QRScannerWidget(
-          mainController: widget.mainController,
-          scannerController: widget.mainController.scannerController,
-          onQRCodeScanned: (String code) async {
-            final response = await widget.mainController.service.changeLocation(widget.itemId, code);
-            if (response.error == ServiceErrors.ok && response.data != null) {
-              Navigator.pushReplacementNamed(
-                context,
-                '/items/details',
-                arguments: response.data,
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.translate('error_changing_location')),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
-            }
-          },
-          instruction: 'Scan new location',
-        ),
-      ),
-    );
-  }
+  // Future<void> _scanLocation(BuildContext context) async {
+  //   await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => QRScannerWidget(
+  //         mainController: widget.mainController,
+  //         scannerController: widget.mainController.scannerController,
+  //         onQRCodeScanned: (String code) async {
+  //           final response = await widget.mainController.service.changeLocation(widget.itemId, code);
+  //           if (response.error == ServiceErrors.ok && response.data != null) {
+  //             Navigator.pushReplacementNamed(
+  //               context,
+  //               '/items/details',
+  //               arguments: response.data,
+  //             );
+  //           } else {
+  //             ScaffoldMessenger.of(context).showSnackBar(
+  //               SnackBar(
+  //                 content: Text(AppLocalizations.of(context)!.translate('error_changing_location')),
+  //                 duration: const Duration(seconds: 2),
+  //               ),
+  //             );
+  //           }
+  //         },
+  //         instruction: 'Scan new location',
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _navigateToAddLocation(BuildContext context) {
     Navigator.pushNamed(context, '/add-location');
@@ -67,10 +67,10 @@ class _ChangeLocationScreenState extends State<ChangeLocationScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            HalfWidthButton(
-              text: AppLocalizations.of(context)!.translate('scan_location'),
-              onPressed: () => _scanLocation(context),
-            ),
+            // HalfWidthButton(
+            //   text: AppLocalizations.of(context)!.translate('scan_location'),
+            //   onPressed: () => _scanLocation(context),
+            // ),
             const SizedBox(height: 16),
           ],
         ),

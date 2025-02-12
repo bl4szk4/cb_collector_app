@@ -11,12 +11,14 @@ class ItemDetailsScreen extends StatefulWidget {
   final MainController mainController;
   final int itemId;
   final String routeOrigin;
+  final ItemDetails? itemDetails; // opcjonalnie przekazane dane
 
   const ItemDetailsScreen({
     Key? key,
     required this.mainController,
     required this.itemId,
     required this.routeOrigin,
+    this.itemDetails,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,13 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchItemDetails();
+
+    if (widget.itemDetails != null && widget.routeOrigin == 'action') {
+      _itemDetails = widget.itemDetails;
+      _isLoading = false;
+    } else {
+      _fetchItemDetails();
+    }
   }
 
   Future<void> _fetchItemDetails() async {
@@ -182,8 +190,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
     );
   }
 
-  Widget _buildDetailRow(String label, String value,
-      {double fontSize = 16, bool isBold = false}) {
+  Widget _buildDetailRow(String label, String value, {double fontSize = 16, bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
