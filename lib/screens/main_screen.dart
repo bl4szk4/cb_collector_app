@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pbl_collector/models/sub_models/qr_scanner_route_arguments.dart';
 import 'package:pbl_collector/widgets/navigators/bottom_navigator.dart';
 import '../controllers/main_controller.dart';
+import '../models/sub_models/my_items_route_arguments.dart';
 import '../services/qr_code_scan_processing.dart';
 import '../widgets/buttons/full_width_button.dart';
 import '../services/app_localizations.dart';
@@ -20,7 +21,13 @@ class MainScreen extends StatelessWidget {
             FullWidthButton(
               text:  AppLocalizations.of(context)!.translate('my_items'),
               onPressed: () {
-                Navigator.pushNamed(context, '/my-items');
+                Navigator.pushNamed(
+                  context,
+                  '/my-items',
+                  arguments: MyItemsRouteArguments(
+                    routeOrigin: 'home',
+                  ),
+                );
               },
             ),
             FullWidthButton(

@@ -107,7 +107,14 @@ class ItemActionScreen extends StatelessWidget {
         onTabSelected: (tab) {
           switch (tab) {
             case 'back':
-              Navigator.pushNamed(context, '/my-items');
+              Navigator.pushNamed(
+                context,
+                '/items/details',
+                arguments: ItemDetailsRouteArguments(
+                  itemId: itemId,
+                  routeOrigin: 'itemsList',
+                ),
+              );
               break;
             case 'exit':
               SystemNavigator.pop();
