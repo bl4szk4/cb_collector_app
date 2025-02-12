@@ -6,8 +6,9 @@ import 'package:pbl_collector/screens/assign_to_user_screen.dart';
 import 'package:pbl_collector/screens/print_screen.dart';
 import 'package:pbl_collector/services/printers/printer_service.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../models/item_details.dart';
 import '../models/logged_user.dart';
+import '../models/sub_models/item_details_route_arguments.dart';
+import '../models/sub_models/qr_scanner_route_arguments.dart';
 import '../screens/add_location_screen.dart';
 import '../screens/change_item_location_screen.dart';
 import '../screens/home_screen.dart';
@@ -23,7 +24,6 @@ import '../services/main_service.dart';
 
 class MainController extends StatefulWidget {
   const MainController({Key? key}) : super(key: key);
-  MobileScannerController get scannerController => _MainControllerState.instance.globalScannerController;
 
   @override
   _MainControllerState createState() => _MainControllerState();
@@ -34,7 +34,6 @@ class MainController extends StatefulWidget {
 
 class _MainControllerState extends State<MainController> {
   static late _MainControllerState instance;
-  final MobileScannerController globalScannerController = MobileScannerController();
 
   final Service service = Service();
   final LoggedUser user = LoggedUser();
@@ -51,7 +50,6 @@ class _MainControllerState extends State<MainController> {
 
   Future<void> _initCamera() async {
     await Permission.camera.request();
-    globalScannerController.start();
   }
 
   void _logOut(BuildContext context) {
@@ -120,27 +118,32 @@ class _MainControllerState extends State<MainController> {
         return const SizedBox.shrink();
       },
       '/main-screen': (context) => MainScreen(),
-      '/qr-scanner': (context) => QRScannerWidget(
-        mainController: widget,
-        scannerController: globalScannerController,
-        onQRCodeScanned: (String code) {
-          Navigator.pushNamed(context, '/login', arguments: code);
-        },
-        navigateToDetails: false,
-        instruction: "Scan your ID",
-      ),
-      '/qr-scanner/details': (context) => QRScannerWidget(
-        mainController: widget,
-        scannerController: globalScannerController,
-        onQRCodeScanned: (String code) {},
-        navigateToDetails: true,
-        instruction: "Scan item",
-      ),
+      '/qr-scanner': (context) {
+        final args = ModalRoute.of(context)?.settings.arguments as QRScannerRouteArguments?;
+        if (args == null) {
+          return const Scaffold(
+            body: Center(child: Text("No arguments")),
+          );
+        }
+        return QRScannerWidget(
+          onQRCodeScanned: args.onQRCodeScanned,
+          instruction: args.instruction,
+        );
+      },
       '/settings': (context) => SettingsScreen(setLocale: _setLocale),
       '/my-items': (context) => MyItemsScreen(mainController: widget),
       '/items/details': (context) {
-        final item = ModalRoute.of(context)!.settings.arguments as ItemDetails;
-        return ItemDetailsScreen(mainController: widget, itemDetails: item);
+        final args = ModalRoute.of(context)?.settings.arguments as ItemDetailsRouteArguments?;
+        if (args == null) {
+          return const Scaffold(
+            body: Center(child: Text("Nie przekazano argumentów")),
+          );
+        }
+        return ItemDetailsScreen(
+          mainController: widget,
+          itemId: args.itemId,
+          routeOrigin: args.routeOrigin,
+        );
       },
       '/item/details/edit': (context) {
         final itemId = ModalRoute.of(context)!.settings.arguments as int;

@@ -28,8 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final Map<String, dynamic> credentials = jsonDecode(qrCode);
     final String username = credentials['username'];
     final String password = credentials['password'];
-    print(username);
-    print(password);
+
     final service = widget.mainController.service;
     final response = await service.login(username, password);
 

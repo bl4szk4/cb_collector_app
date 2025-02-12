@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../models/sub_models/qr_scanner_route_arguments.dart';
 import '../widgets/buttons/full_width_button.dart';
 import '../services/app_localizations.dart';
 import '../widgets/navigators/bottom_navigator.dart';
@@ -12,7 +13,16 @@ class HomeScreen extends StatelessWidget {
 
   void _checkLogin(BuildContext context) {
     if (!mainController.user.isLogged) {
-      Navigator.pushNamed(context, '/qr-scanner');
+      Navigator.pushNamed(
+        context,
+        '/qr-scanner',
+        arguments: QRScannerRouteArguments(
+          onQRCodeScanned: (String code) {
+            Navigator.pushNamed(context, '/login', arguments: code);
+          },
+          instruction: AppLocalizations.of(context)!.translate('scan_your_id'),
+        ),
+      );
     } else {
       Navigator.pushNamed(context, '/main-screen');
     }
@@ -28,7 +38,16 @@ class HomeScreen extends StatelessWidget {
             FullWidthButton(
               text: AppLocalizations.of(context)!.translate('login_screen_title'),
               onPressed: () {
-                Navigator.pushNamed(context, '/qr-scanner');
+                Navigator.pushNamed(
+                  context,
+                  '/qr-scanner',
+                  arguments: QRScannerRouteArguments(
+                    onQRCodeScanned: (String code) {
+                      Navigator.pushNamed(context, '/login', arguments: code);
+                    },
+                    instruction: AppLocalizations.of(context)!.translate('scan_your_id'),
+                  ),
+                );
               },
             ),
             FullWidthButton(

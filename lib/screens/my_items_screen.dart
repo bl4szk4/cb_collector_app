@@ -5,6 +5,7 @@ import 'package:pbl_collector/models/item_details_list.dart';
 import 'package:pbl_collector/models/items_list.dart';
 import 'package:pbl_collector/models/item_details.dart';
 import '../models/service_response.dart';
+import '../models/sub_models/item_details_route_arguments.dart';
 import '../services/app_localizations.dart';
 import '../enums/service_errors.dart';
 import '../widgets/navigators/bottom_navigator.dart';
@@ -71,21 +72,16 @@ class _ChemicalsListScreenState extends State<MyItemsScreen> {
 
   Widget _buildItemTile(ItemDetailsList item) {
     return GestureDetector(
-      onTap: () async {
-        final response = await widget.mainController.service.getItemDetailsById(item.id);
-
-        if (response.error == ServiceErrors.ok && response.data != null) {
+        onTap: () {
           Navigator.pushNamed(
             context,
             '/items/details',
-            arguments: response.data,
+            arguments: ItemDetailsRouteArguments(
+              itemId: item.id,
+              routeOrigin: 'itemsList',
+            ),
           );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to load item details')),
-          );
-        }
-      },
+        },
     child: Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(

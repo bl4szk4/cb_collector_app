@@ -66,7 +66,6 @@ class RestService {
       }
 
       logger.i('Status: ${response.statusCode}');
-      logger.i('Headers: ${response.headers}');
       logger.i('Response: ${response.body}');
 
       if (!acceptableStatusCodes.contains(response.statusCode)) {

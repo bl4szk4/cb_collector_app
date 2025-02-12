@@ -5,42 +5,72 @@ import 'package:pbl_collector/models/item_details.dart';
 import '../services/app_localizations.dart';
 import '../widgets/buttons/small_button.dart';
 import '../widgets/navigators/go_back_navigator.dart';
+import '../enums/service_errors.dart';
 
 class ItemDetailsScreen extends StatefulWidget {
   final MainController mainController;
-  final ItemDetails itemDetails;
+  final int itemId;
+  final String routeOrigin;
 
-  const ItemDetailsScreen({super.key, required this.mainController, required this.itemDetails});
+  const ItemDetailsScreen({
+    Key? key,
+    required this.mainController,
+    required this.itemId,
+    required this.routeOrigin,
+  }) : super(key: key);
 
   @override
   _ItemDetailsScreenState createState() => _ItemDetailsScreenState();
 }
 
 class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
+  bool _isLoading = true;
+  String? _error;
+  ItemDetails? _itemDetails;
 
   @override
   void initState() {
     super.initState();
+    _fetchItemDetails();
+  }
+
+  Future<void> _fetchItemDetails() async {
+    final response = await widget.mainController.service.getItemDetailsById(widget.itemId);
+    if (!mounted) return;
+    if (response.error == ServiceErrors.ok && response.data != null) {
+      setState(() {
+        _itemDetails = response.data;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _error = AppLocalizations.of(context)!.translate('failed_to_load_item_details');
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _error != null
+          ? Center(child: Text(_error!))
+          : SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildItemDetails(widget.itemDetails),
-            const SizedBox(height: 16),
+            _buildItemDetails(_itemDetails!),
             const SizedBox(height: 16),
             HalfWidthButton(
               text: AppLocalizations.of(context)!.translate('print'),
               onPressed: () {
                 Navigator.pushNamed(
-                    context,
-                    '/print-screen',
-                  arguments: widget.itemDetails.id
+                  context,
+                  '/print-screen',
+                  arguments: _itemDetails!.id,
                 );
               },
             ),
@@ -51,7 +81,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                 Navigator.pushNamed(
                   context,
                   '/item/details/edit',
-                  arguments: widget.itemDetails.id,
+                  arguments: _itemDetails!.id,
                 );
               },
             ),
@@ -83,77 +113,77 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildDetailRow(
-                AppLocalizations.of(context)!.translate('item_name'),
-                item.name, fontSize: 20, isBold: true
+              AppLocalizations.of(context)!.translate('item_name'),
+              item.name,
+              fontSize: 20,
+              isBold: true,
             ),
             const Divider(),
             _buildDetailRow(
-                AppLocalizations.of(context)!.translate('item_status'),
-                item.status.name
+              AppLocalizations.of(context)!.translate('item_status'),
+              item.status.name,
             ),
             if (item.expirationDay != null)
               _buildDetailRow(
-                  AppLocalizations.of(context)!.translate('expiration_date'),
-                  '${item.expirationDay!.toLocal()}'.split(' ')[0]
+                AppLocalizations.of(context)!.translate('expiration_date'),
+                '${item.expirationDay!.toLocal()}'.split(' ')[0],
               ),
             _buildDetailRow(
-                AppLocalizations.of(context)!.translate('item_type_id'),
-                item.itemTypeId.toString()
+              AppLocalizations.of(context)!.translate('item_type_id'),
+              item.itemTypeId.toString(),
             ),
-
             const SizedBox(height: 12),
-            _buildSectionTitle(AppLocalizations.of(context)!.translate('owner'),
+            _buildSectionTitle(AppLocalizations.of(context)!.translate('owner')),
+            _buildDetailRow(
+              AppLocalizations.of(context)!.translate('user_name'),
+              '${item.user.name} ${item.user.surname}',
             ),
             _buildDetailRow(
-                AppLocalizations.of(context)!.translate('user_name'),
-                '${item.user.name} ${item.user.surname}'
+              AppLocalizations.of(context)!.translate('department'),
+              item.user.department?.name ?? 'N/A',
             ),
-            _buildDetailRow(
-                AppLocalizations.of(context)!.translate('department'),
-                item.user.department?.name ?? 'N/A'
-            ),
-
             const SizedBox(height: 12),
-            _buildSectionTitle(
-              AppLocalizations.of(context)!.translate('current_user'),
+            _buildSectionTitle(AppLocalizations.of(context)!.translate('current_user')),
+            _buildDetailRow(
+              AppLocalizations.of(context)!.translate('user_name'),
+              '${item.currentUser.name} ${item.currentUser.surname}',
             ),
             _buildDetailRow(
-                AppLocalizations.of(context)!.translate('user_name'),
-                '${item.currentUser.name} ${item.currentUser.surname}'
+              AppLocalizations.of(context)!.translate('department'),
+              item.currentUser.department?.name ?? 'N/A',
             ),
-            _buildDetailRow(
-                AppLocalizations.of(context)!.translate('department'),
-                item.currentUser.department?.name ?? 'N/A'
-            ),
-
             const SizedBox(height: 12),
-            _buildSectionTitle(AppLocalizations.of(context)!.translate('location'),
+            _buildSectionTitle(AppLocalizations.of(context)!.translate('location')),
+            _buildDetailRow(
+              AppLocalizations.of(context)!.translate('room'),
+              item.location?.room.number ?? 'N/A',
             ),
             _buildDetailRow(
-                AppLocalizations.of(context)!.translate('room'),
-                item.location?.room.number ?? 'N/A'
+              AppLocalizations.of(context)!.translate('department'),
+              item.location?.room.department?.name ?? 'N/A',
             ),
             _buildDetailRow(
-                AppLocalizations.of(context)!.translate('department'),
-                item.location?.room.department?.name ?? 'N/A'
+              AppLocalizations.of(context)!.translate('qr_code'),
+              item.location?.qrCode ?? 'N/A',
             ),
-            _buildDetailRow(
-                AppLocalizations.of(context)!.translate('qr_code'),
-                item.location?.qrCode ?? 'N/A'
-            ),
-
             const SizedBox(height: 12),
-            _buildSectionTitle(AppLocalizations.of(context)!.translate('safety_codes'),
-                ),
-            _buildDetailRow('P-Codes', item.pCodes != null ? item.pCodes!.join(', ') : 'N/A'),
-            _buildDetailRow('H-Codes', item.hCodes != null ? item.hCodes!.join(', ') : 'N/A'),
+            _buildSectionTitle(AppLocalizations.of(context)!.translate('safety_codes')),
+            _buildDetailRow(
+              'P-Codes',
+              item.pCodes != null ? item.pCodes!.join(', ') : 'N/A',
+            ),
+            _buildDetailRow(
+              'H-Codes',
+              item.hCodes != null ? item.hCodes!.join(', ') : 'N/A',
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value, {double fontSize = 16, bool isBold = false}) {
+  Widget _buildDetailRow(String label, String value,
+      {double fontSize = 16, bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -167,7 +197,10 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
             child: Text(
               value,
               textAlign: TextAlign.right,
-              style: TextStyle(fontSize: fontSize, fontWeight: isBold ? FontWeight.bold : FontWeight.normal),
+              style: TextStyle(
+                fontSize: fontSize,
+                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
           ),
         ],
@@ -180,9 +213,12 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
       padding: const EdgeInsets.only(top: 8.0, bottom: 4.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.blue,
+        ),
       ),
     );
   }
-
 }
