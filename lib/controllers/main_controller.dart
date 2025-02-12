@@ -8,6 +8,7 @@ import 'package:pbl_collector/services/printers/printer_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../models/logged_user.dart';
 import '../models/sub_models/item_details_route_arguments.dart';
+import '../models/sub_models/my_items_route_arguments.dart';
 import '../models/sub_models/qr_scanner_route_arguments.dart';
 import '../screens/add_location_screen.dart';
 import '../screens/change_item_location_screen.dart';
@@ -117,7 +118,7 @@ class _MainControllerState extends State<MainController> {
         });
         return const SizedBox.shrink();
       },
-      '/main-screen': (context) => MainScreen(),
+      '/main-screen': (context) => MainScreen(mainController: widget),
       '/qr-scanner': (context) {
         final args = ModalRoute.of(context)?.settings.arguments as QRScannerRouteArguments?;
         if (args == null) {
@@ -131,7 +132,19 @@ class _MainControllerState extends State<MainController> {
         );
       },
       '/settings': (context) => SettingsScreen(setLocale: _setLocale),
-      '/my-items': (context) => MyItemsScreen(mainController: widget),
+      '/my-items': (context) {
+        final args = ModalRoute.of(context)?.settings.arguments as MyItemsRouteArguments?;
+        if (args == null) {
+          return const Scaffold(
+            body: Center(child: Text("No arguments")),
+          );
+        }
+        return MyItemsScreen(
+            mainController: widget,
+            locationId: args.locationId,
+            routeOrigin: args.routeOrigin,
+        );
+      },
       '/items/details': (context) {
         final args = ModalRoute.of(context)?.settings.arguments as ItemDetailsRouteArguments?;
         if (args == null) {

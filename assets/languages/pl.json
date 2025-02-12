@@ -75,5 +75,8 @@
   "qr_code": "Kod QR",
   "safety_codes": "Kody bezpieczeństwa",
   "owner": "Właściciel",
-  "logged_out_successfully": "Wylogowano"
+  "logged_out_successfully": "Wylogowano",
+  "scan": "Skanuj",
+  "scan_id": "Zeskanuj ID",
+  "scan_your_id": "Zeskanuj swój identyfikator"
 }

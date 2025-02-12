@@ -134,6 +134,30 @@ class Service{
 
   }
 
+  Future<ServiceResponse<ItemsList>> getItemsInRoom(int roomId) async{
+    try{
+      ItemsListDTO responseDTO = await restRepository.getItemsInRoom(controller.user, roomId);
+      return ServiceResponse(data: ItemsList.fromDTO(responseDTO), error: ServiceErrors.ok);
+    } catch (e){
+      logger.e(e.toString());
+      return ServiceResponse(data: null, error: ServiceErrors.apiError);
+
+    }
+
+  }
+
+  Future<ServiceResponse<ItemsList>> getItemsInLocation(int locationId) async{
+    try{
+      ItemsListDTO responseDTO = await restRepository.getItemsInLocation(controller.user, locationId);
+      return ServiceResponse(data: ItemsList.fromDTO(responseDTO), error: ServiceErrors.ok);
+    } catch (e){
+      logger.e(e.toString());
+      return ServiceResponse(data: null, error: ServiceErrors.apiError);
+
+    }
+
+  }
+
 
   Future<ServiceResponse<FacultyList>> getFaculties() async{
     try{

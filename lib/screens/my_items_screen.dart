@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/item_details_list.dart';
 import 'package:pbl_collector/models/items_list.dart';
 import 'package:pbl_collector/models/item_details.dart';
+import 'package:pbl_collector/models/sub_models/my_items_route_arguments.dart';
 import '../models/service_response.dart';
 import '../models/sub_models/item_details_route_arguments.dart';
 import '../services/app_localizations.dart';
@@ -12,8 +15,15 @@ import '../widgets/navigators/bottom_navigator.dart';
 
 class MyItemsScreen extends StatefulWidget {
   final MainController mainController;
+  final String routeOrigin;
+  final int? locationId;
 
-  const MyItemsScreen({super.key, required this.mainController});
+  const MyItemsScreen({
+    super.key,
+    required this.mainController,
+    required this.routeOrigin,
+    this.locationId
+  });
 
   @override
   _ChemicalsListScreenState createState() => _ChemicalsListScreenState();
@@ -25,7 +35,15 @@ class _ChemicalsListScreenState extends State<MyItemsScreen> {
   @override
   void initState() {
     super.initState();
-    _itemsFuture = widget.mainController.service.getItems();
+
+    switch (widget.routeOrigin) {
+      case 'home':
+        _itemsFuture = widget.mainController.service.getItems();
+      case 'room':
+        _itemsFuture = widget.mainController.service.getItemsInRoom(widget.locationId!);
+      case 'location':
+        _itemsFuture = widget.mainController.service.getItemsInLocation(widget.locationId!);
+    }
   }
 
   @override

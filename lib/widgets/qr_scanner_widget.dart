@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'navigators/go_back_navigator.dart';
+import 'package:logger/logger.dart';
 
 class QRScannerWidget extends StatefulWidget {
   final Function(String) onQRCodeScanned;
   final String instruction;
   final bool scanOnce;
   final bool autoTorch;
+
 
   const QRScannerWidget({
     Key? key,
@@ -24,6 +26,8 @@ class QRScannerWidget extends StatefulWidget {
 class _QRScannerWidgetState extends State<QRScannerWidget> {
   late final MobileScannerController _localScannerController;
   bool _hasScanned = false;
+  final Logger logger = Logger();
+
 
   @override
   void initState() {
@@ -96,12 +100,14 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
   }
 
   void _handleScannedCode(String code) {
+    logger.i(code);
     if (widget.scanOnce) {
       setState(() {
         _hasScanned = true;
       });
     }
     Navigator.pop(context);
+    logger.i("Handling code");
     widget.onQRCodeScanned(code);
   }
 }

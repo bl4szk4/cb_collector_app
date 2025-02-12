@@ -190,6 +190,22 @@ class RestService {
     );
   }
 
+  Future<ItemsListDTO> getItemsInRoom(LoggedUser user, int roomId) async {
+    return _getWithAuth(
+      user,
+      '/item/room/$roomId',
+      parser: (json) => ItemsListDTO.fromJson(json),
+    );
+  }
+
+  Future<ItemsListDTO> getItemsInLocation(LoggedUser user, int locationId) async {
+    return _getWithAuth(
+      user,
+      '/item/location/$locationId',
+      parser: (json) => ItemsListDTO.fromJson(json),
+    );
+  }
+
   Future<ItemDetailsDTO> getItemDetails(LoggedUser user, String itemQR) async {
     return _getWithAuth(
       user,

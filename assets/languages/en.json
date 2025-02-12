@@ -75,5 +75,8 @@
   "qr_code": "QR Code",
   "safety_codes": "Safety codes",
   "owner": "Owner",
-  "logged_out_successfully": "Logged out successfully"
+  "logged_out_successfully": "Logged out successfully",
+  "scan": "Scan",
+  "scan_id": "Scan ID",
+  "scan_your_id": "Scan your ID"
 }
