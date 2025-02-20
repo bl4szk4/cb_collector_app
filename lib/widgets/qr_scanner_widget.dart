@@ -34,14 +34,24 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
     super.initState();
     _localScannerController = MobileScannerController();
     _localScannerController.start();
-    _localScannerController.toggleTorch();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 100));
+      if (_localScannerController.torchState.value == TorchState.off) {
+        try {
+          await _localScannerController.toggleTorch();
+        } catch (e) {
+          logger.e("Error toggling torch: $e");
+        }
+      }
+    });
   }
+
 
   @override
   void dispose() {
-    _localScannerController.toggleTorch();
-    _localScannerController.stop();
+    if (_localScannerController.torchState.value == TorchState.on) {
+      _localScannerController.toggleTorch();
+    }    _localScannerController.stop();
     _localScannerController.dispose();
     super.dispose();
   }
