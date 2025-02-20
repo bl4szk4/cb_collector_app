@@ -111,7 +111,26 @@ class _MainControllerState extends State<MainController> {
   Map<String, WidgetBuilder> _buildRoutes() {
     return {
       '/home': (context) => HomeScreen(mainController: widget),
-      '/login': (context) => LoginScreen(mainController: widget),
+      '/login': (context) {
+        final args = ModalRoute.of(context)?.settings.arguments;
+        if (args is Map<String, dynamic>) {
+          final bool withCredentials = args['withCredentials'] ?? false;
+          return LoginScreen(
+            mainController: widget,
+            withCredentials: withCredentials,
+          );
+        } else if (args is String) {
+          return LoginScreen(
+            mainController: widget,
+            withCredentials: false,
+          );
+        } else {
+          return LoginScreen(
+            mainController: widget,
+            withCredentials: false,
+          );
+        }
+      },
       '/log-out': (context) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _logOut(context);

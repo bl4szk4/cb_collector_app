@@ -1,6 +1,6 @@
 {
   "home_screen_title": "Home Screen",
-  "login_screen_title": "Login",
+  "login_screen_title": "Login with QR",
   "main_screen_title": "Main Screen",
   "select_language": "Select language",
   "change_language": "Change language",
@@ -79,5 +79,6 @@
   "scan": "Scan",
   "scan_id": "Scan ID",
   "scan_your_id": "Scan your ID",
-  "invalid_credentials": "Invalid credentials"
+  "invalid_credentials": "Invalid credentials",
+  "login_with_credentials": "Login with credentials"
 }

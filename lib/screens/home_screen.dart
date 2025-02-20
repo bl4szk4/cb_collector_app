@@ -51,6 +51,16 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             FullWidthButton(
+              text: AppLocalizations.of(context)!.translate('login_with_credentials'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/login', arguments: {
+                  'code': null,
+                  'withCredentials': true,
+                }
+                );
+              },
+            ),
+            FullWidthButton(
               text: AppLocalizations.of(context)!.translate('settings'),
               onPressed: () {
                 Navigator.pushNamed(context, '/settings');
