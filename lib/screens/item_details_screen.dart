@@ -11,7 +11,7 @@ class ItemDetailsScreen extends StatefulWidget {
   final MainController mainController;
   final int itemId;
   final String routeOrigin;
-  final ItemDetails? itemDetails; // opcjonalnie przekazane dane
+  final ItemDetails? itemDetails;
 
   const ItemDetailsScreen({
     Key? key,

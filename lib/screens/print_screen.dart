@@ -5,6 +5,7 @@ import 'package:pbl_collector/enums/service_errors.dart';
 import 'package:pbl_collector/services/printers/printer_service.dart';
 
 import '../models/qr_code.dart';
+import '../models/sub_models/item_details_route_arguments.dart';
 import '../widgets/navigators/go_back_navigator.dart';
 
 class PrinterScreen extends StatefulWidget {
@@ -120,7 +121,14 @@ class _PrinterScreenState extends State<PrinterScreen> {
         onTabSelected: (tab) {
           switch (tab) {
             case 'back':
-              Navigator.pushNamed(context, '/my-items');
+              Navigator.pushNamed(
+                context,
+                '/items/details',
+                arguments: ItemDetailsRouteArguments(
+                  itemId: widget.itemId,
+                  routeOrigin: 'itemsList',
+                ),
+              );
               break;
             case 'exit':
               SystemNavigator.pop();

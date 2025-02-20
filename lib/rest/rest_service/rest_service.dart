@@ -11,6 +11,7 @@ import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dar
 import 'package:pbl_collector/models/logged_user.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_list_dto.dart';
+import 'dto/get_dto/items_details_action_dto.dart';
 import 'dto/get_dto/list_dto/department_list_dto.dart';
 import 'dto/get_dto/login_dto.dart';
 import 'dto/get_dto/list_dto/faculty_list_dto.dart';
@@ -255,7 +256,7 @@ class RestService {
     );
   }
 
-  Future<ItemDetailsDTO> performItemAction(
+  Future<ItemsDetailsActionDto> performItemAction(
       LoggedUser user,
       String action,
       dynamic data,
@@ -268,35 +269,35 @@ class RestService {
         'Authorization': 'Bearer ${user.token?.access}',
       },
       body: data.toJson(),
-      parser: (json) => ItemDetailsDTO.fromJson(json),
+      parser: (json) => ItemsDetailsActionDto.fromJson(json),
     );
   }
 
-  Future<ItemDetailsDTO> assignItem(LoggedUser user, AssignToUserDto data) {
+  Future<ItemsDetailsActionDto> assignItem(LoggedUser user, AssignToUserDto data) {
     return performItemAction(user, 'assign_to_user', data);
   }
 
-  Future<ItemDetailsDTO> returnItem(LoggedUser user, GeneralItemIDDTO data) {
+  Future<ItemsDetailsActionDto> returnItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'return_to_owner', data);
   }
 
-  Future<ItemDetailsDTO> changeItemLocation(LoggedUser user, ChangeItemLocationDto data) {
+  Future<ItemsDetailsActionDto> changeItemLocation(LoggedUser user, ChangeItemLocationDto data) {
     return performItemAction(user, 'change_location', data);
   }
 
-  Future<ItemDetailsDTO> markMissingItem(LoggedUser user, GeneralItemIDDTO data) {
+  Future<ItemsDetailsActionDto> markMissingItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'mark_missing', data);
   }
 
-  Future<ItemDetailsDTO> markLowItem(LoggedUser user, GeneralItemIDDTO data) {
+  Future<ItemsDetailsActionDto> markLowItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'mark_low_level', data);
   }
 
-  Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, GeneralItemIDDTO data) {
+  Future<ItemsDetailsActionDto> markEmptyItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'mark_empty', data);
   }
 
-  Future<ItemDetailsDTO> disposeItem(LoggedUser user, GeneralItemIDDTO data) {
+  Future<ItemsDetailsActionDto> disposeItem(LoggedUser user, GeneralItemIDDTO data) {
     return performItemAction(user, 'dispose_of_item', data);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:pbl_collector/models/logged_user.dart';
+import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_action_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/list_dto/department_list_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/list_dto/faculty_list_dto.dart';
@@ -87,31 +88,31 @@ class RestRepository {
     return await restService.getItemDetailsById(user, itemId);
   }
 
-  Future<ItemDetailsDTO> assignItem(LoggedUser user, AssignToUserDto data) async {
+  Future<ItemsDetailsActionDto> assignItem(LoggedUser user, AssignToUserDto data) async {
     return await restService.assignItem(user, data);
   }
 
-  Future<ItemDetailsDTO> returnItem(LoggedUser user, GeneralItemIDDTO data) async {
+  Future<ItemsDetailsActionDto> returnItem(LoggedUser user, GeneralItemIDDTO data) async {
     return await restService.returnItem(user, data);
   }
 
-  Future<ItemDetailsDTO> changeItemLocation(LoggedUser user, ChangeItemLocationDto data) async {
+  Future<ItemsDetailsActionDto> changeItemLocation(LoggedUser user, ChangeItemLocationDto data) async {
     return await restService.changeItemLocation(user, data);
   }
 
-  Future<ItemDetailsDTO> markMissingItem(LoggedUser user, GeneralItemIDDTO data) async {
+  Future<ItemsDetailsActionDto> markMissingItem(LoggedUser user, GeneralItemIDDTO data) async {
     return await restService.markMissingItem(user, data);
   }
 
-  Future<ItemDetailsDTO> markLowItem(LoggedUser user, GeneralItemIDDTO data) async {
+  Future<ItemsDetailsActionDto> markLowItem(LoggedUser user, GeneralItemIDDTO data) async {
     return await restService.markLowItem(user, data);
   }
 
-    Future<ItemDetailsDTO> markEmptyItem(LoggedUser user, GeneralItemIDDTO data) async {
+    Future<ItemsDetailsActionDto> markEmptyItem(LoggedUser user, GeneralItemIDDTO data) async {
     return await restService.markEmptyItem(user, data);
   }
 
-  Future<ItemDetailsDTO> disposeItem(LoggedUser user, GeneralItemIDDTO data) async {
+  Future<ItemsDetailsActionDto> disposeItem(LoggedUser user, GeneralItemIDDTO data) async {
     return await restService.disposeItem(user, data);
   }
 

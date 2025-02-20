@@ -5,12 +5,14 @@ import 'package:pbl_collector/enums/label_type.dart';
 import 'package:pbl_collector/models/departments_list.dart';
 import 'package:pbl_collector/models/faculties_list.dart';
 import 'package:pbl_collector/models/item_details.dart';
+import 'package:pbl_collector/models/item_details_action.dart';
 import 'package:pbl_collector/models/items_list.dart';
 import 'package:pbl_collector/models/location.dart';
 import 'package:pbl_collector/models/location_list.dart';
 import 'package:pbl_collector/models/qr_code.dart';
 import 'package:pbl_collector/models/room.dart';
 import 'package:pbl_collector/models/users_list.dart';
+import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_action_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/list_dto/department_list_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/list_dto/faculty_list_dto.dart';
@@ -288,14 +290,14 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> assignItem(int itemId, int userId) async {
+  Future<ServiceResponse<ItemDetailsAction>> assignItem(int itemId, int userId) async {
     try {
       AssignToUserDto params = AssignToUserDto(itemId: itemId, userId: userId);
-      ItemDetailsDTO responseDTO = await restRepository.assignItem(
+      ItemsDetailsActionDto responseDTO = await restRepository.assignItem(
     controller.user, params
     );
     return ServiceResponse(
-      data: ItemDetails.fromDTO(responseDTO),
+      data: ItemDetailsAction.fromDTO(responseDTO),
       error: ServiceErrors.ok
     );
     } catch (e) {
@@ -304,14 +306,14 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> returnItem(int itemId) async {
+  Future<ServiceResponse<ItemDetailsAction>> returnItem(int itemId) async {
     try {
       GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
-      ItemDetailsDTO responseDTO = await restRepository.returnItem(
+      ItemsDetailsActionDto responseDTO = await restRepository.returnItem(
           controller.user, params
       );
       return ServiceResponse(
-          data: ItemDetails.fromDTO(responseDTO),
+          data: ItemDetailsAction.fromDTO(responseDTO),
           error: ServiceErrors.ok
       );
     } catch (e) {
@@ -320,14 +322,14 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> changeLocation(int itemId, String qrCode) async {
+  Future<ServiceResponse<ItemDetailsAction>> changeLocation(int itemId, String qrCode) async {
     try {
       ChangeItemLocationDto params = ChangeItemLocationDto(itemId: itemId, locationQrCode: qrCode);
-      ItemDetailsDTO responseDTO = await restRepository.changeItemLocation(
+      ItemsDetailsActionDto responseDTO = await restRepository.changeItemLocation(
           controller.user, params
       );
       return ServiceResponse(
-          data: ItemDetails.fromDTO(responseDTO),
+          data: ItemDetailsAction.fromDTO(responseDTO),
           error: ServiceErrors.ok
       );
     } catch (e) {
@@ -336,14 +338,14 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> disposeItem(int itemId) async {
+  Future<ServiceResponse<ItemDetailsAction>> disposeItem(int itemId) async {
     try {
       GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
-      ItemDetailsDTO responseDTO = await restRepository.disposeItem(
+      ItemsDetailsActionDto responseDTO = await restRepository.disposeItem(
           controller.user, params
       );
       return ServiceResponse(
-          data: ItemDetails.fromDTO(responseDTO),
+          data: ItemDetailsAction.fromDTO(responseDTO),
           error: ServiceErrors.ok
       );
     } catch (e) {
@@ -352,14 +354,14 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> markLow(int itemId) async {
+  Future<ServiceResponse<ItemDetailsAction>> markLow(int itemId) async {
     try {
       GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
-      ItemDetailsDTO responseDTO = await restRepository.markLowItem(
+      ItemsDetailsActionDto responseDTO = await restRepository.markLowItem(
           controller.user, params
       );
       return ServiceResponse(
-          data: ItemDetails.fromDTO(responseDTO),
+          data: ItemDetailsAction.fromDTO(responseDTO),
           error: ServiceErrors.ok
       );
     } catch (e) {
@@ -368,14 +370,14 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> markMissing(int itemId) async {
+  Future<ServiceResponse<ItemDetailsAction>> markMissing(int itemId) async {
     try {
       GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
-      ItemDetailsDTO responseDTO = await restRepository.markMissingItem(
+      ItemsDetailsActionDto responseDTO = await restRepository.markMissingItem(
           controller.user, params
       );
       return ServiceResponse(
-          data: ItemDetails.fromDTO(responseDTO),
+          data: ItemDetailsAction.fromDTO(responseDTO),
           error: ServiceErrors.ok
       );
     } catch (e) {
@@ -384,14 +386,14 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetails>> markEmpty(int itemId) async {
+  Future<ServiceResponse<ItemDetailsAction>> markEmpty(int itemId) async {
     try {
       GeneralItemIDDTO params = GeneralItemIDDTO(itemId: itemId);
-      ItemDetailsDTO responseDTO = await restRepository.markEmptyItem(
+      ItemsDetailsActionDto responseDTO = await restRepository.markEmptyItem(
           controller.user, params
       );
       return ServiceResponse(
-          data: ItemDetails.fromDTO(responseDTO),
+          data: ItemDetailsAction.fromDTO(responseDTO),
           error: ServiceErrors.ok
       );
     } catch (e) {

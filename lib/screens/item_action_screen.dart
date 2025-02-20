@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/item_details.dart';
+import 'package:pbl_collector/models/item_details_action.dart';
 import 'package:pbl_collector/widgets/navigators/go_back_navigator.dart';
 import '../models/sub_models/item_details_route_arguments.dart';
 import '../services/app_localizations.dart';
@@ -21,7 +22,7 @@ class ItemActionScreen extends StatelessWidget {
 
   Future<void> _performAction(
       BuildContext context,
-      Future<ServiceResponse<ItemDetails>> Function(int) action,
+      Future<ServiceResponse<ItemDetailsAction>> Function(int) action,
       ) async {
     final response = await action(itemId);
 
@@ -32,7 +33,6 @@ class ItemActionScreen extends StatelessWidget {
         arguments: ItemDetailsRouteArguments(
           itemId: itemId,
           routeOrigin: 'action',
-          itemDetails: response.data,
         ),
       );
     } else {
