@@ -42,14 +42,18 @@ class PrintingService {
       final printerType = settings['printCodes'];
       logger.i('Printer: $printerType');
 
-      final file = await _createTempFileFromImage(imageData);
+      final bool applyProcessing = true;
+
+      final file = await _createTempFileFromImage(imageData, applyProcessing: applyProcessing);
 
       if (printerType == 'internal') {
         await _iminPrinterService.printLabel(file);
         return 'QR code printed.';
       } else if (printerType == 'brother') {
-        final brotherService = await _getBrotherPrinterService();
+        var brotherService = await _getBrotherPrinterService();
         await brotherService.printJpeg(file, 'normal', 'full');
+        brotherService = await _getBrotherPrinterService();
+        brotherService.getStatus();
         return 'QR code printed.';
       } else {
         throw Exception('Unknown printer.');
@@ -60,20 +64,42 @@ class PrintingService {
     }
   }
 
-  Future<File> _createTempFileFromImage(Uint8List imageData) async {
+  img.Image convertToBinary(img.Image image, {int threshold = 20}) {
+    for (int y = 0; y < image.height; y++) {
+      for (int x = 0; x < image.width; x++) {
+        img.Pixel pixel = image.getPixel(x, y);
+        num luminance = img.getLuminance(pixel);
+        img.ColorRgb8 color = luminance > threshold ? img.ColorRgb8(255, 255, 255) : img.ColorRgb8(0, 0, 0);
+        image.setPixel(x, y, color);
+      }
+    }
+    return image;
+  }
+
+  Future<File> _createTempFileFromImage(Uint8List imageData, {bool applyProcessing = true}) async {
     try {
-      final decodedImage = img.decodeImage(imageData);
+      img.Image? decodedImage = img.decodeImage(imageData);
       if (decodedImage == null) {
         throw Exception('Error in decoding provided image data.');
       }
-      final jpegData = img.encodeJpg(decodedImage, quality: 100);
 
+      if (applyProcessing) {
+        final background = img.Image(
+          width: decodedImage.width,
+          height: decodedImage.height,
+        );
+        final whiteColor = img.ColorRgb8(255, 255, 255);
+        img.fill(background, color: whiteColor);
+        img.compositeImage(background, decodedImage);
+        decodedImage = background;
+
+        decodedImage = convertToBinary(decodedImage);
+      }
+
+      final jpegData = img.encodeJpg(decodedImage, quality: 100);
       final tempDir = await getTemporaryDirectory();
       final tempFile = File('${tempDir.path}/qr_code_print.jpeg');
       await tempFile.writeAsBytes(jpegData);
-
-      final fileSize = tempFile.lengthSync();
-      logger.i('Generated file size: $fileSize bytes');
 
       return tempFile;
     } catch (e) {

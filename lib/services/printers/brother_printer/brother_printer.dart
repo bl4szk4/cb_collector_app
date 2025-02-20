@@ -30,6 +30,7 @@ class BrotherPrinterService {
     try {
       final question = GetStatus();
       final data = await _sendAndExpect(question);
+      logger.i(data);
       return Status(data);
     } catch (e) {
       logger.e("Error loading status: $e");
@@ -63,7 +64,11 @@ class BrotherPrinterService {
   Future<void> printJpeg(File jpegFile, String mode, String cut, {bool useLock = false}) async {
     try {
       await checkAndConnect();
-
+      final Status status = await getStatus();
+      if (status.printState != "IDLE"){
+        throw Exception('The printer is busy.');
+      }
+      logger.i(status.printState);
       String? jobNumber;
       if (useLock) {
         final printerLock = await lock();
@@ -85,8 +90,6 @@ class BrotherPrinterService {
       logger.i("Sending file");
       await _connection.sendFile(jpegFile);
       logger.i("File sent successfully");
-
-      await waitToTurnIdle();
 
       if (useLock) {
         logger.i('Releasing blockage for task: $jobNumber');
