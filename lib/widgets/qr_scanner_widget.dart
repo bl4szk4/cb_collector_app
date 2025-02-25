@@ -35,7 +35,7 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
     _localScannerController = MobileScannerController();
     _localScannerController.start();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 100));
+      logger.i(_localScannerController.torchState.value);
       if (_localScannerController.torchState.value == TorchState.off) {
         try {
           await _localScannerController.toggleTorch();

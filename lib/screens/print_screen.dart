@@ -38,8 +38,6 @@ class _PrinterScreenState extends State<PrinterScreen> {
   @override
   void initState() {
     super.initState();
-    _printerStatus = AppLocalizations.of(context)!
-        .translate('loading_qr_code');
     _loadItemLabel();
   }
 
