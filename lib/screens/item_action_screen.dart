@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
-import 'package:pbl_collector/models/item_details.dart';
 import 'package:pbl_collector/models/item_details_action.dart';
 import 'package:pbl_collector/widgets/navigators/go_back_navigator.dart';
 import '../models/sub_models/item_details_route_arguments.dart';
+import '../models/sub_models/qr_scanner_route_arguments.dart';
 import '../services/app_localizations.dart';
 import '../models/service_response.dart';
 import '../enums/service_errors.dart';
@@ -95,8 +95,20 @@ class ItemActionScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(
                   context,
-                  '/item/details/edit/location',
-                  arguments: itemId,
+                  '/qr-scanner',
+                  arguments: QRScannerRouteArguments(
+                    onQRCodeScanned: (String code) {
+                      Navigator.pushNamed(
+                        context,
+                        '/change-location',
+                        arguments: {
+                          'itemId': itemId,
+                          'qrCode': code,
+                        },
+                      );
+                    },
+                    instruction: AppLocalizations.of(context)!.translate('scan_location'),
+                  ),
                 );
               },
             ),

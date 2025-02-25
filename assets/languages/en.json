@@ -93,5 +93,8 @@
   "printing": "Printing...",
   "printed_success": "Successfully sent for printing",
   "qr_code_loaded": "QR code loaded successfully",
-  "loading_qr_code": "Loading QR code"
+  "loading_qr_code": "Loading QR code",
+  "go_back": "Go back",
+  "error_invalid_qr_code": "Invalid QR Code",
+  "error_invalid_qr_type": "Invalid location"
 }

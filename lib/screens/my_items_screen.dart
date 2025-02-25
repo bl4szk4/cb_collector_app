@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/item_details_list.dart';
 import 'package:pbl_collector/models/items_list.dart';
-import 'package:pbl_collector/models/item_details.dart';
-import 'package:pbl_collector/models/sub_models/my_items_route_arguments.dart';
 import '../models/service_response.dart';
 import '../models/sub_models/item_details_route_arguments.dart';
 import '../services/app_localizations.dart';
@@ -26,10 +22,10 @@ class MyItemsScreen extends StatefulWidget {
   });
 
   @override
-  _ChemicalsListScreenState createState() => _ChemicalsListScreenState();
+  ChemicalsListScreenState createState() => ChemicalsListScreenState();
 }
 
-class _ChemicalsListScreenState extends State<MyItemsScreen> {
+class ChemicalsListScreenState extends State<MyItemsScreen> {
   late Future<ServiceResponse<ItemsList>> _itemsFuture;
 
   @override

@@ -3,10 +3,10 @@ import '../../../interfaces/dto.dart';
 
 class ChangeItemLocationDto implements DTO<ChangeItemLocationDto>{
   int itemId;
-  String locationQrCode;
+  int locationId;
 
   ChangeItemLocationDto({
-    required this.locationQrCode,
+    required this.locationId,
     required this.itemId
   });
 
@@ -14,7 +14,7 @@ class ChangeItemLocationDto implements DTO<ChangeItemLocationDto>{
   Map<String, dynamic> toJson(){
     return {
       'id_item': itemId,
-      'location_qr_code': locationQrCode
+      'id_location': locationId
     };
   }
 

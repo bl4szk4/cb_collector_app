@@ -1,7 +1,6 @@
 
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
-import 'package:pbl_collector/enums/label_type.dart';
 import 'package:pbl_collector/enums/qr_code_type.dart';
 import 'package:pbl_collector/models/departments_list.dart';
 import 'package:pbl_collector/models/faculties_list.dart';
@@ -323,9 +322,9 @@ class Service{
     }
   }
 
-  Future<ServiceResponse<ItemDetailsAction>> changeLocation(int itemId, String qrCode) async {
+  Future<ServiceResponse<ItemDetailsAction>> changeLocation(int itemId, int locationId) async {
     try {
-      ChangeItemLocationDto params = ChangeItemLocationDto(itemId: itemId, locationQrCode: qrCode);
+      ChangeItemLocationDto params = ChangeItemLocationDto(itemId: itemId, locationId: locationId);
       ItemsDetailsActionDto responseDTO = await restRepository.changeItemLocation(
           controller.user, params
       );

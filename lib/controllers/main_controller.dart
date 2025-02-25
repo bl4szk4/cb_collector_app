@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pbl_collector/enums/qr_code_type.dart';
 import 'package:pbl_collector/screens/assign_to_user_screen.dart';
 import 'package:pbl_collector/screens/print_location_code_screen.dart';
@@ -12,7 +11,6 @@ import '../models/logged_user.dart';
 import '../models/sub_models/item_details_route_arguments.dart';
 import '../models/sub_models/my_items_route_arguments.dart';
 import '../models/sub_models/qr_scanner_route_arguments.dart';
-import '../screens/add_location_screen.dart';
 import '../screens/change_item_location_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/item_action_screen.dart';
@@ -188,10 +186,6 @@ class _MainControllerState extends State<MainController> {
         final itemId = ModalRoute.of(context)!.settings.arguments as int;
         return UserSelectionScreen(mainController: widget, itemId: itemId);
       },
-      '/item/details/edit/location': (context) {
-        final itemId = ModalRoute.of(context)!.settings.arguments as int;
-        return ChangeLocationScreen(mainController: widget, itemId: itemId);
-      },
       '/print-location': (context) => PrintLocationCodeScreen(mainController: widget),
       '/print-screen': (context) {
         final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -206,6 +200,25 @@ class _MainControllerState extends State<MainController> {
           mainController: widget,
         );
       },
+      '/change-location': (context) {
+        final args = ModalRoute.of(context)?.settings.arguments;
+        logger.i(args);
+        if (args is Map<String, dynamic>) {
+          final int itemId = args['itemId'] ?? -1;
+          final String qrCode = args['qrCode'].toString();
+
+          return ChangeLocationScreen(
+            mainController: widget,
+            itemId: itemId,
+            qrCode: qrCode,
+          );
+        } else {
+          return const Scaffold(
+            body: Center(child: Text("No arguments")),
+          );
+        }
+      }
+
     };
   }
 }

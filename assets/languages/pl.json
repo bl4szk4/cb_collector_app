@@ -93,6 +93,9 @@
   "printing": "Drukowanie...",
   "printed_success": "Pomyślnie wysłano do druku",
   "qr_code_loaded": "Kod QR załadowany",
-  "loading_qr_code": "Ładowanie kodu QR"
+  "loading_qr_code": "Ładowanie kodu QR",
+  "go_back": "Powrót",
+  "error_invalid_qr_code": "Zły kod QR",
+  "error_invalid_qr_type": "Błędny typ"
 
 }
