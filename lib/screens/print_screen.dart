@@ -38,6 +38,8 @@ class _PrinterScreenState extends State<PrinterScreen> {
   @override
   void initState() {
     super.initState();
+    _printerStatus = AppLocalizations.of(context)!
+        .translate('loading_qr_code');
     _loadItemLabel();
   }
 
@@ -50,13 +52,15 @@ class _PrinterScreenState extends State<PrinterScreen> {
       setState(() {
         _itemLabel = response.data;
         _loading = false;
-        _printerStatus = 'QR code loaded.';
+        _printerStatus = AppLocalizations.of(context)!
+            .translate('qr_code_loaded');
       });
     } else {
       setState(() {
         _error = 'Error loading QR code.';
         _loading = false;
-        _printerStatus = 'Error loading QR code.';
+        _printerStatus = AppLocalizations.of(context)!
+            .translate('error_loading_qr_code');
       });
     }
   }
@@ -64,7 +68,7 @@ class _PrinterScreenState extends State<PrinterScreen> {
   Future<void> _printQRCode() async {
     if (_itemLabel == null) return;
     setState(() {
-      _printerStatus = 'Printing QR code...';
+      _printerStatus = AppLocalizations.of(context)!.translate('printing');
     });
     try {
       final result = await widget.printingService.printQRCodeImage(_itemLabel!.qrImage);
@@ -73,7 +77,8 @@ class _PrinterScreenState extends State<PrinterScreen> {
       });
     } catch (e) {
       setState(() {
-        _printerStatus = 'Error printing QR code: $e';
+        _printerStatus = AppLocalizations.of(context)!
+            .translate('error_printing_qr_code');
       });
     }
   }

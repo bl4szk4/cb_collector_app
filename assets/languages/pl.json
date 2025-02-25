@@ -87,6 +87,12 @@
   "no_room_selected": "Brak wybranego pokoju",
   "no_location_selected": "Brak wybranej lokalizacji",
   "print_location": "Drukuj QR kod Lokalizacji",
-  "select_location": "Wybierz lokalizację"
+  "select_location": "Wybierz lokalizację",
+  "error_loading_qr_code": "Błąd ładowania kodu QR",
+  "error_printing_qr_code": "Błąd drukowania kodu QR. Sprawdź drukarkę",
+  "printing": "Drukowanie...",
+  "printed_success": "Pomyślnie wysłano do druku",
+  "qr_code_loaded": "Kod QR załadowany",
+  "loading_qr_code": "Ładowanie kodu QR"
 
 }

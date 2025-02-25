@@ -87,5 +87,11 @@
   "no_room_selected": "No Room selected",
   "no_location_selected": "No Location selected",
   "print_location": "Print Localization QR",
-  "select_location": "Select location"
+  "select_location": "Select location",
+  "error_loading_qr_code": "Error loading QR code",
+  "error_printing_qr_code": "Error printing QR code. Check printer.",
+  "printing": "Printing...",
+  "printed_success": "Successfully sent for printing",
+  "qr_code_loaded": "QR code loaded successfully",
+  "loading_qr_code": "Loading QR code"
 }

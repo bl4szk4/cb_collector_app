@@ -176,7 +176,6 @@ class _PrintLocationCodeScreenState extends State<PrintLocationCodeScreen> {
                 onChanged: (location) {
                   setState(() {
                     _selectedLocation = location;
-                    _selectedLocation = null;
                   });
                 },
               ),
