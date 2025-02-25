@@ -9,9 +9,10 @@ class DepartmentListDto{
   });
 
   factory DepartmentListDto.fromJson(dynamic json){
-    var departments = json is List? json : json["departments"];
+    var departments = json is List? json : json["items"];
 
-    List<DepartmentDTO> departmentsList = departments.map((department) => DepartmentDTO.fromJson(department)).toList();
+    List<DepartmentDTO> departmentsList = (departments as List<dynamic>)
+        .map((department) => DepartmentDTO.fromJson(department)).toList();
 
     return DepartmentListDto(departmentsList: departmentsList);
   }

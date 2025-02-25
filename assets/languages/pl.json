@@ -80,6 +80,13 @@
   "scan_id": "Zeskanuj ID",
   "scan_your_id": "Zeskanuj swój identyfikator",
   "invalid_credentials": "Błędne dane logowania",
-  "login_with_credentials": "Logowanie ręczne"
+  "login_with_credentials": "Logowanie ręczne",
+  "error_loading_locations": "Błąd wczytywania lokalizacji",
+  "print_location_qr_code": "Drukuj QR Kod dla Lokalizacji",
+  "print_room_qr_code": "Drukuj QR Kod dla Pokoju",
+  "no_room_selected": "Brak wybranego pokoju",
+  "no_location_selected": "Brak wybranej lokalizacji",
+  "print_location": "Drukuj QR kod Lokalizacji",
+  "select_location": "Wybierz lokalizację"
 
 }

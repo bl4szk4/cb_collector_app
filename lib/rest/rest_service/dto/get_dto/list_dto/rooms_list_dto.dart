@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../room_dto.dart';
 
 
@@ -9,9 +11,9 @@ class RoomsListDTO{
 });
 
   factory RoomsListDTO.fromJson(dynamic json){
-    var rooms = json is List? json : json["rooms"];
+    var rooms = json is List? json : json["items"];
 
-    List<RoomDTO> roomsList = rooms.map((room) => RoomDTO.fromJson(room)).toList();
+    List<RoomDTO> roomsList = (rooms as List<dynamic>).map((room) => RoomDTO.fromJson(room)).toList();
 
     return RoomsListDTO(roomsList: roomsList);
   }

@@ -51,7 +51,7 @@ class RestRepository {
     return await restService.getListOfDepartments(user, facultyId);
   }
 
-  Future<RoomsListDTO> getListOfRooms(LoggedUser user, int departmentId) async {
+  Future<RoomsListDTO> getListOfRooms(LoggedUser user, int? departmentId) async {
     return await restService.getListOfRooms(user, departmentId);
   }
 
@@ -120,8 +120,9 @@ class RestRepository {
     return await restService.printLabel(user, data);
   }
 
-  Future<ItemQRCodeDto> getItemQrCode(LoggedUser user, int itemId) async{
-    return await restService.getItemQRCode(user, itemId);
+  Future<ItemQRCodeDto> getItemQrCode(LoggedUser user, int itemId, String type) async{
+    return await restService.getItemQRCode(user, itemId, type);
 
   }
+
 }

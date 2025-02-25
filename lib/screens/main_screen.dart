@@ -15,54 +15,55 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FullWidthButton(
-              text:  AppLocalizations.of(context)!.translate('my_items'),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/my-items',
-                  arguments: MyItemsRouteArguments(
-                    routeOrigin: 'home',
-                  ),
-                );
-              },
-            ),
-            FullWidthButton(
-              text: AppLocalizations.of(context)!.translate('scan'),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/qr-scanner',
-                  arguments: QRScannerRouteArguments(
-                    instruction: AppLocalizations.of(context)!.translate('scan_id'),
-                    onQRCodeScanned: (String code) async {
-                      final qrProcessingService = QRCodeProcessingService(
-                        service: mainController.service,
-                        context: context
-                      );
-                      await qrProcessingService.processQRCode(code);
-                    },
-                  ),
-                );
-              },
-            ),
-            FullWidthButton(
-              text:  AppLocalizations.of(context)!.translate('add'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/add-location');
-              },
-            ),
-            FullWidthButton(
-              text:  AppLocalizations.of(context)!.translate('log_out'),
-              onPressed: () {
-
-                Navigator.pushNamed(context, '/log-out');
-              },
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FullWidthButton(
+                text: AppLocalizations.of(context)!.translate('my_items'),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/my-items',
+                    arguments: MyItemsRouteArguments(
+                      routeOrigin: 'home',
+                    ),
+                  );
+                },
+              ),
+              FullWidthButton(
+                text: AppLocalizations.of(context)!.translate('scan'),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/qr-scanner',
+                    arguments: QRScannerRouteArguments(
+                      instruction: AppLocalizations.of(context)!.translate('scan_id'),
+                      onQRCodeScanned: (String code) async {
+                        final qrProcessingService = QRCodeProcessingService(
+                          service: mainController.service,
+                          context: context,
+                        );
+                        await qrProcessingService.processQRCode(code);
+                      },
+                    ),
+                  );
+                },
+              ),
+              FullWidthButton(
+                text: AppLocalizations.of(context)!.translate('print_location'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/print-location');
+                },
+              ),
+              FullWidthButton(
+                text: AppLocalizations.of(context)!.translate('log_out'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/log-out');
+                },
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigation(

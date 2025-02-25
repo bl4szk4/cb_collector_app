@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
+import 'package:pbl_collector/enums/qr_code_type.dart';
 import 'package:pbl_collector/models/item_details.dart';
 import '../services/app_localizations.dart';
 import '../widgets/buttons/small_button.dart';
@@ -78,7 +79,10 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
                 Navigator.pushNamed(
                   context,
                   '/print-screen',
-                  arguments: _itemDetails!.id,
+                  arguments: {
+                    'itemId': _itemDetails!.id,
+                    'type': QrCodeType.item
+                  }
                 );
               },
             ),

@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
+import 'package:pbl_collector/enums/qr_code_type.dart';
 import 'package:pbl_collector/enums/service_errors.dart';
 import 'package:pbl_collector/services/printers/printer_service.dart';
 
 import '../models/qr_code.dart';
 import '../models/sub_models/item_details_route_arguments.dart';
+import '../services/app_localizations.dart';
+import '../widgets/buttons/small_button.dart';
 import '../widgets/navigators/go_back_navigator.dart';
 
 class PrinterScreen extends StatefulWidget {
   final PrintingService printingService;
   final int itemId;
   final MainController mainController;
+  final QrCodeType type;
 
   const PrinterScreen({
     Key? key,
     required this.printingService,
     required this.itemId,
+    required this.type,
     required this.mainController,
   }) : super(key: key);
 
@@ -37,7 +42,10 @@ class _PrinterScreenState extends State<PrinterScreen> {
   }
 
   Future<void> _loadItemLabel() async {
-    final response = await widget.mainController.service.getItemQrCode(widget.itemId);
+    final response = await widget.mainController
+        .service.getItemQrCode(
+        widget.itemId, widget.type
+    );
     if (response.error == ServiceErrors.ok && response.data != null) {
       setState(() {
         _itemLabel = response.data;
@@ -106,14 +114,10 @@ class _PrinterScreenState extends State<PrinterScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _printQRCode,
-                icon: const Icon(Icons.print),
-                label: const Text('Print QR Code'),
+            HalfWidthButton(
+              onPressed: _printQRCode,
+              text: AppLocalizations.of(context)!.translate('print'),
               ),
-            ),
           ],
         ),
       ),
@@ -121,14 +125,7 @@ class _PrinterScreenState extends State<PrinterScreen> {
         onTabSelected: (tab) {
           switch (tab) {
             case 'back':
-              Navigator.pushNamed(
-                context,
-                '/items/details',
-                arguments: ItemDetailsRouteArguments(
-                  itemId: widget.itemId,
-                  routeOrigin: 'itemsList',
-                ),
-              );
+              Navigator.pushNamed(context, '/main-screen');
               break;
             case 'exit':
               SystemNavigator.pop();

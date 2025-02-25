@@ -2,6 +2,7 @@
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:pbl_collector/enums/label_type.dart';
+import 'package:pbl_collector/enums/qr_code_type.dart';
 import 'package:pbl_collector/models/departments_list.dart';
 import 'package:pbl_collector/models/faculties_list.dart';
 import 'package:pbl_collector/models/item_details.dart';
@@ -195,7 +196,7 @@ class Service{
 
   }
 
-  Future<ServiceResponse<RoomsList>> getRooms(int departmentId) async{
+  Future<ServiceResponse<RoomsList>> getRooms(int? departmentId) async{
     try{
       RoomsListDTO responseDTO = await restRepository.getListOfRooms(
           controller.user, departmentId
@@ -276,10 +277,10 @@ class Service{
   //   }
   // }
 
-  Future<ServiceResponse<ItemLabel>> getItemQrCode(int id) async {
+  Future<ServiceResponse<ItemLabel>> getItemQrCode(int id, QrCodeType type) async {
     try {
       ItemQRCodeDto responseDTO = await restRepository.getItemQrCode(
-          controller.user, id
+          controller.user, id, type.name
       );
       return ServiceResponse(
           data: ItemLabel.fromDTO(responseDTO), error: ServiceErrors.ok

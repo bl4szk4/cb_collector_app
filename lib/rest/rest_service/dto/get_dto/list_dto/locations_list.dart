@@ -9,9 +9,10 @@ class LocationsListDTO{
   });
 
   factory LocationsListDTO.fromJson(dynamic json){
-    var locations = json is List? json : json["locations"];
+    var locations = json is List? json : json["items"];
 
-    List<LocationDTO> locationsList = locations.map((location) => LocationDTO.fromJson(location)).toList();
+    List<LocationDTO> locationsList = (locations as List<dynamic>)
+        .map((location) => LocationDTO.fromJson(location)).toList();
 
     return LocationsListDTO(locationsList: locationsList);
   }

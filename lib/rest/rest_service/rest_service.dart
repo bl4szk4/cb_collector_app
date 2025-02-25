@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:pbl_collector/rest/rest_service/dto/get_dto/items_details_dto.dart';
@@ -141,10 +142,13 @@ class RestService {
     );
   }
 
-  Future<RoomsListDTO> getListOfRooms(LoggedUser user, int departmentId) async {
+  Future<RoomsListDTO> getListOfRooms(LoggedUser user, int? departmentId) async {
+    final String url = departmentId != null
+        ? '/location/get-rooms/$departmentId/' : '/room/get_rooms/';
+
     return _getWithAuth(
       user,
-      '/location/get-rooms/$departmentId/',
+      url,
       parser: (json) => RoomsListDTO.fromJson(json),
     );
   }
@@ -152,7 +156,7 @@ class RestService {
   Future<LocationsListDTO> getListOfLocations(LoggedUser user, int roomId) async {
     return _getWithAuth(
       user,
-      '/location/get-rooms/$roomId/',
+      '/location/room/$roomId/',
       parser: (json) => LocationsListDTO.fromJson(json),
     );
   }
@@ -228,9 +232,10 @@ class RestService {
   Future<ItemQRCodeDto> getItemQRCode(
       LoggedUser user,
       int itemId,
+      String type,
       ) async {
     return _makeRequest(
-      '/item/qr/$itemId',
+      '/$type/qr/$itemId',
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

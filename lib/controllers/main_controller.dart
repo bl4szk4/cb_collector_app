@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:logger/logger.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:pbl_collector/enums/qr_code_type.dart';
 import 'package:pbl_collector/screens/assign_to_user_screen.dart';
+import 'package:pbl_collector/screens/print_location_code_screen.dart';
 import 'package:pbl_collector/screens/print_screen.dart';
 import 'package:pbl_collector/services/printers/printer_service.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -190,16 +192,20 @@ class _MainControllerState extends State<MainController> {
         final itemId = ModalRoute.of(context)!.settings.arguments as int;
         return ChangeLocationScreen(mainController: widget, itemId: itemId);
       },
-      '/add-location': (context) => AddLocationScreen(mainController: widget),
+      '/print-location': (context) => PrintLocationCodeScreen(mainController: widget),
       '/print-screen': (context) {
-        final itemId = ModalRoute
-            .of(context)!
-            .settings
-            .arguments as int;
-        return PrinterScreen(printingService: printingService,
-            itemId: itemId,
-            mainController: widget);
-      }
+        final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+        final int itemId = args['itemId'] as int;
+        final QrCodeType type = args['type'] as QrCodeType;
+
+        return PrinterScreen(
+          printingService: printingService,
+          itemId: itemId,
+          type: type,
+          mainController: widget,
+        );
+      },
     };
   }
 }

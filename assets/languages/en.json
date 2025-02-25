@@ -80,5 +80,12 @@
   "scan_id": "Scan ID",
   "scan_your_id": "Scan your ID",
   "invalid_credentials": "Invalid credentials",
-  "login_with_credentials": "Login with credentials"
+  "login_with_credentials": "Login with credentials",
+  "error_loading_locations": "Error loading locations",
+  "print_location_qr_code": "Print Location QR Code",
+  "print_room_qr_code": "Print Room QR Code",
+  "no_room_selected": "No Room selected",
+  "no_location_selected": "No Location selected",
+  "print_location": "Print Localization QR",
+  "select_location": "Select location"
 }
