@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
       _message = null;
     });
+
     final Map<String, dynamic> credentials = jsonDecode(qrCode);
     if (!credentials.containsKey('username') || !credentials.containsKey('password')) {
       setState(() {
