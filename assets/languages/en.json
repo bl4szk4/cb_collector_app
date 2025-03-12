@@ -96,5 +96,7 @@
   "loading_qr_code": "Loading QR code",
   "go_back": "Go back",
   "error_invalid_qr_code": "Invalid QR Code",
-  "error_invalid_qr_type": "Invalid location"
+  "error_invalid_qr_type": "Invalid location",
+  "print_qr_code": "Print QR Code",
+  "print_label": "Print Label"
 }

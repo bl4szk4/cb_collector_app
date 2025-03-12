@@ -28,7 +28,7 @@ import 'dto/response_dto/token_dto.dart';
 class RestService {
   final String baseUrl;
   final Logger logger = Logger();
-  final Duration timeoutDuration = const Duration(seconds: 60);
+  final Duration timeoutDuration = const Duration(seconds: 10);
   static const List<int> acceptableStatusCodes = [200, 201, 204];
 
   RestService({required this.baseUrl});
@@ -250,7 +250,7 @@ class RestService {
       dynamic data,
       ) async {
     return _makeRequest(
-      '/item/label/',
+      '/label/generate_label/',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

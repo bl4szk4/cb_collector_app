@@ -170,23 +170,62 @@ class PrintingService {
     }
   }
 
-  Future<String> printLabel(File labelFile) async {
+  Future<File> _convertImageToFile(Uint8List imageData, String filename, {bool applyProcessing = false, int shiftRight = 200}) async {
+    try {
+      img.Image? decodedImage = img.decodeImage(imageData);
+      if (decodedImage == null) {
+        throw Exception('Invalid image data: Unable to decode.');
+      }
+
+      img.Image shiftedImage = img.Image(
+          width: decodedImage.width.toInt() + shiftRight,
+          height: decodedImage.height
+      );
+
+      final whiteColor = img.ColorRgb8(255, 255, 255);
+      img.fill(shiftedImage, color: whiteColor);
+      img.compositeImage(shiftedImage, decodedImage, dstX: shiftRight, dstY: 0);
+
+      if (applyProcessing) {
+        shiftedImage = convertToBinary(shiftedImage);
+      }
+
+      final jpegData = img.encodeJpg(shiftedImage, quality: 95);
+
+      final tempDir = await getTemporaryDirectory();
+      final tempFile = File('${tempDir.path}/$filename');
+
+      await tempFile.writeAsBytes(jpegData);
+
+      return tempFile;
+    } catch (e) {
+      throw Exception('Error in generating file from image data: $e');
+    }
+  }
+
+  Future<String> printLabelImage(Uint8List imageData) async {
     try {
       final settings = await SettingsService.loadSettings();
       final printerType = settings['printLabels'];
+      logger.i('Printer: $printerType');
+
+      final file = await _convertImageToFile(imageData, 'label_print.jpeg');
 
       if (printerType == 'internal') {
         throw Exception('Forbidden printer.');
       } else if (printerType == 'brother') {
-        final brotherService = await _getBrotherPrinterService();
-        await brotherService.printJpeg(labelFile, 'normal', 'full');
+        var brotherService = await _getBrotherPrinterService();
+        await brotherService.printJpeg(file, 'normal', 'full');
+        brotherService = await _getBrotherPrinterService();
+        brotherService.getStatus();
         return 'Label printed on Brother.';
       } else {
         throw Exception('Unknown printer label.');
       }
     } catch (e) {
-      logger.e('Error printing label: $e');
-      return 'Error printing label: $e';
+      logger.e('Error printing label image: $e');
+      return 'Error printing label image: $e';
     }
   }
+
 }

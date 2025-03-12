@@ -31,6 +31,9 @@ import 'package:pbl_collector/rest/rest_service/dto/post_dto/list_users_params.d
 import 'package:pbl_collector/rest/rest_service/dto/post_dto/return_item_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_dto.dart';
 import 'package:pbl_collector/rest/rest_service/dto/response_dto/token_dto.dart';
+import 'package:pbl_collector/rest/rest_service/dto/response_dto/blob_list_dto.dart';
+import '../models/item_label_blob_list.dart';
+import '../rest/rest_service/dto/post_dto/item_label_dto.dart';
 import 'settings_service.dart';
 
 
@@ -260,21 +263,21 @@ class Service{
     }
   }
 
-  // Future<ServiceResponse<BlobsList>> getLabel(int id, LabelType labelType) async {
-  //   try {
-  //     ItemLabelDto params = ItemLabelDto(id: id, labelType: labelType);
-  //     BlobListDto responseDTO = await restRepository.printLabels(
-  //         controller.user, params
-  //     );
-  //     return ServiceResponse(
-  //         data: BlobsList.fromDTO(responseDTO),
-  //         error: ServiceErrors.ok
-  //     );
-  //   } catch (e) {
-  //     logger.e(e.toString());
-  //     return ServiceResponse(data: null, error: ServiceErrors.apiError);
-  //   }
-  // }
+  Future<ServiceResponse<BlobListBlob>> getLabel(int id) async {
+    try {
+      ItemLabelDto params = ItemLabelDto(id: id);
+      BlobListDto responseDTO = await restRepository.printLabels(
+          controller.user, params
+      );
+      return ServiceResponse(
+          data: BlobListBlob.fromDTO(responseDTO),
+          error: ServiceErrors.ok
+      );
+    } catch (e) {
+      logger.e(e.toString());
+      return ServiceResponse(data: null, error: ServiceErrors.apiError);
+    }
+  }
 
   Future<ServiceResponse<ItemLabel>> getItemQrCode(int id, QrCodeType type) async {
     try {

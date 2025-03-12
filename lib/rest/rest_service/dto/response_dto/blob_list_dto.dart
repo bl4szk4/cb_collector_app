@@ -1,18 +1,27 @@
-import 'blob_dto.dart';
+import '../response_dto/label_dto.dart';
 
-
-class BlobListDto{
-  List<ItemQRCodeDto> blobList;
+class BlobListDto {
+  final List<ItemLabelDto> blobList;
 
   BlobListDto({
-    required this.blobList
+    required this.blobList,
   });
 
-  factory BlobListDto.fromJson(dynamic json){
-    var blobs = json["blobs"];
+  factory BlobListDto.fromJson(Map<String, dynamic> json) {
+    final List<dynamic> labelList = json["label"] as List<dynamic>;
 
-    List<ItemQRCodeDto> blobList = blobs.map((blob) => ItemQRCodeDto.fromJson(blob)).toList();
+    final List<ItemLabelDto> items = labelList
+        .asMap()
+        .entries
+        .map((entry) => ItemLabelDto.fromBase64(entry.value as String, entry.key + 1))
+        .toList();
 
-    return BlobListDto(blobList: blobList);
+    return BlobListDto(blobList: items);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "label": blobList.map((item) => item.toJson()).toList(),
+    };
   }
 }

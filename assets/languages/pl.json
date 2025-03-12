@@ -96,6 +96,7 @@
   "loading_qr_code": "Ładowanie kodu QR",
   "go_back": "Powrót",
   "error_invalid_qr_code": "Zły kod QR",
-  "error_invalid_qr_type": "Błędny typ"
-
+  "error_invalid_qr_type": "Błędny typ",
+  "print_qr_code": "Drukuj kod QR",
+  "print_label": "Drukuj Etykietę"
 }

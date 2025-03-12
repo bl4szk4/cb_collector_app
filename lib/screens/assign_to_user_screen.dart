@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pbl_collector/controllers/main_controller.dart';
 import 'package:pbl_collector/models/user.dart';
 import 'package:pbl_collector/widgets/buttons/small_button.dart';
+import '../models/sub_models/item_details_route_arguments.dart';
 import '../services/app_localizations.dart';
 import '../models/service_response.dart';
 import '../models/users_list.dart';
@@ -83,7 +84,7 @@ class _UserSelectionScreenState extends State<UserSelectionScreen> {
       Navigator.pushNamed(
         context,
         '/items/details',
-        arguments: response.data,
+        arguments: ItemDetailsRouteArguments(itemId: widget.itemId, routeOrigin: 'action'),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
