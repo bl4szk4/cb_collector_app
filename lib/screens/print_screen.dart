@@ -54,18 +54,20 @@ class _PrinterScreenState extends State<PrinterScreen> {
       widget.type,
     );
 
-    final labelResponse = await widget.mainController.service.getLabel(widget.itemId);
+    if (widget.type == QrCodeType.item) {
+      final labelResponse = await widget.mainController.service.getLabel(widget.itemId);
+
+      if (labelResponse.error == ServiceErrors.ok && labelResponse.data != null) {
+        _labels = labelResponse.data!.blobList;
+      } else {
+        _error = _error ?? 'Error loading labels.';
+      }
+    }
 
     if (qrResponse.error == ServiceErrors.ok && qrResponse.data != null) {
       _qrCode = qrResponse.data!.qrImage;
     } else {
       _error = 'Error loading QR code.';
-    }
-
-    if (labelResponse.error == ServiceErrors.ok && labelResponse.data != null) {
-      _labels = labelResponse.data!.blobList;
-    } else {
-      _error = _error ?? 'Error loading labels.';
     }
 
     setState(() {
@@ -120,56 +122,61 @@ class _PrinterScreenState extends State<PrinterScreen> {
               ),
               const SizedBox(height: 20),
             ],
-            const Text(
-              "Select a Label to Print:",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            _labels.isEmpty
-                ? Text(AppLocalizations.of(context)!.translate('no_qr_codes'))
-                : Column(
-              children: _labels.map((label) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _selectedLabel = label;
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: _selectedLabel == label ? Colors.blue : Colors.grey,
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.symmetric(vertical: 5),
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      children: [
-                        Image.memory(
-                          label.labelImage,
-                          fit: BoxFit.contain,
-                          width: 150,
-                          height: 150,
+
+            if (widget.type == QrCodeType.item) ...[
+              const Text(
+                "Select a Label to Print:",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              _labels.isEmpty
+                  ? Text(AppLocalizations.of(context)!.translate('no_qr_codes'))
+                  : Column(
+                children: _labels.map((label) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedLabel = label;
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: _selectedLabel == label ? Colors.blue : Colors.grey,
+                          width: 2,
                         ),
-                        const SizedBox(height: 5),
-                        Text("Label ID: ${label.id}"),
-                      ],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          Image.memory(
+                            label.labelImage,
+                            fit: BoxFit.contain,
+                            width: 150,
+                            height: 150,
+                          ),
+                          const SizedBox(height: 5),
+                          Text("Label ID: ${label.id}"),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            HalfWidthButton(
-              onPressed: () => _handlePrint(_printLabel),
-              text: AppLocalizations.of(context)!.translate('print_label'),
-            ),
-            const SizedBox(height: 20),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              HalfWidthButton(
+                onPressed: () => _handlePrint(_printLabel),
+                text: AppLocalizations.of(context)!.translate('print_label'),
+              ),
+              const SizedBox(height: 20),
+            ],
+
             if (_printing) const Center(child: CircularProgressIndicator()),
           ],
-        ),
+        )
+
       ),
       bottomNavigationBar: GoBackNavigator(
         onTabSelected: (tab) {

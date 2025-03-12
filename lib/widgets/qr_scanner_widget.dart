@@ -10,7 +10,6 @@ class QRScannerWidget extends StatefulWidget {
   final bool scanOnce;
   final bool autoTorch;
 
-
   const QRScannerWidget({
     Key? key,
     required this.onQRCodeScanned,
@@ -26,32 +25,52 @@ class QRScannerWidget extends StatefulWidget {
 class _QRScannerWidgetState extends State<QRScannerWidget> {
   late final MobileScannerController _localScannerController;
   bool _hasScanned = false;
+  bool _torchOn = false;
   final Logger logger = Logger();
-
 
   @override
   void initState() {
     super.initState();
-    _localScannerController = MobileScannerController();
-    _localScannerController.start();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      logger.i(_localScannerController.torchState.value);
-      if (_localScannerController.torchState.value == TorchState.off) {
-        try {
-          await _localScannerController.toggleTorch();
-        } catch (e) {
-          logger.e("Error toggling torch: $e");
-        }
-      }
-    });
+    _localScannerController = MobileScannerController(autoStart: false);
+
+    _initializeScanner();
   }
 
+  Future<void> _initializeScanner() async {
+    await _localScannerController.start();
+    await Future.delayed(Duration(milliseconds: 300));
+
+    if (widget.autoTorch) {
+      try {
+        await _localScannerController.toggleTorch();
+        setState(() {
+          _torchOn = true;
+        });
+        logger.i("Torch turned on at start");
+      } catch (e) {
+        logger.e("Error toggling torch: $e");
+      }
+    }
+  }
+
+  void _toggleTorch() async {
+    try {
+      await _localScannerController.toggleTorch();
+      setState(() {
+        _torchOn = !_torchOn;
+      });
+      logger.i(_torchOn ? "Torch turned on" : "Torch turned off");
+    } catch (e) {
+      logger.e("Error toggling torch: $e");
+    }
+  }
 
   @override
   void dispose() {
-    if (_localScannerController.torchState.value == TorchState.on) {
+    if (_torchOn) {
       _localScannerController.toggleTorch();
-    }    _localScannerController.stop();
+    }
+    _localScannerController.stop();
     _localScannerController.dispose();
     super.dispose();
   }
@@ -90,6 +109,15 @@ class _QRScannerWidgetState extends State<QRScannerWidget> {
                 ),
               ),
             ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: FloatingActionButton(
+              backgroundColor: _torchOn ? Colors.yellow : Colors.grey,
+              onPressed: _toggleTorch,
+              child: Icon(_torchOn ? Icons.flash_on : Icons.flash_off),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: GoBackNavigator(
